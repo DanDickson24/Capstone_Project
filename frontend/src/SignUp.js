@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { DriverSignUpForm, CustomerSignUpForm } from './Forms';
+import CustomerForm from './Forms/CustomerForm';
+import DriverForm from './Forms/DriverForm';
 
 function SignUp() {
   const [userType, setUserType] = useState('');
@@ -16,8 +17,8 @@ function SignUp() {
         <option value="driver">Drive for Hauler</option>
         <option value="customer">Move my stuff with Hauler</option>
       </select>
-      {userType === 'driver' && <DriverSignUpForm />}
-      {userType === 'customer' && <CustomerSignUpForm />}
+      {userType === 'driver' && <DriverForm />}
+      {userType === 'customer' && <CustomerForm />}
     </div>
   );
 }

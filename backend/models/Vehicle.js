@@ -19,7 +19,16 @@ class Vehicle {
       const values = [driverId, vehicleData.vehicleYear, vehicleData.vehicleMake, vehicleData.vehicleModel, vehicleData.vehicleTrim, vehicleData.vehiclePayloadCapacity, vehicleData.vehicleTowingCapacity, vehicleData.preferredPayloadCapacity, vehicleData.preferredTowingCapacity];
       await db.query(query, values);
   }
-
+  static async fetchByDriverId(driverId) {
+    try {
+      const query = `SELECT * FROM vehicles WHERE driver_id = $1`;
+      const result = await db.query(query, [driverId]);
+      return result.rows[0]; 
+    } catch (error) {
+      console.error("Error in fetchByDriverId:", error);
+      throw error;
+    }
+  }
   }
   
   module.exports = Vehicle;

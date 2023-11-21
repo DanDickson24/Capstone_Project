@@ -1,13 +1,15 @@
 const db = require('../db'); 
 const h3 = require('h3-js');
+
 class Driver {
-  constructor(driver_id, current_location, grid_cell_id, available, service_preference) {
-    this.driver_id = driver_id;
-    this.current_location = current_location;
-    this.grid_cell_id = grid_cell_id;
-    this.available = available;
-    this.service_preference = service_preference;
+  constructor(driverData) {
+    this.driver_id = driverData.driver_id;
+    this.current_location = driverData.current_location;
+    this.grid_cell_id = driverData.grid_cell_id;
+    this.available = driverData.available;
+    this.service_preference = driverData.service_preference;
   }
+
   static async updateServicePreference(driverId, newPreference) {
     try {
       const query = `UPDATE drivers SET service_preference = $1 WHERE driver_id = $2`;
@@ -27,42 +29,47 @@ class Driver {
     }
   }
   
-    static async findNearbyDrivers(h3Indices, serviceType) {
-      try {
-        const query = 'SELECT * FROM drivers WHERE grid_cell_id = ANY($1) AND available = true AND service_type = $2';
-        const values = [h3Indices, serviceType];
-  
-        const result = await db.query(query, values);
-        return result.rows.map(row => new Driver(row.driver_id, row.current_location, row.grid_cell_id, row.available));
-      } catch (error) {
-        throw new Error('Error fetching nearby drivers');
-      }
+  static async fetchLocation(driverId) {
+    try {
+        const query = `SELECT current_location FROM drivers WHERE driver_id = $1`;
+        const result = await db.query(query, [driverId]);
+        if (result.rows.length === 0 || !result.rows[0].current_location) {
+            console.log('Driver location not found or not set for driver_id:', driverId);
+            return null;
+        }
+        const location = result.rows[0].current_location;
+        return { lat: location.y, lng: location.x };
+    } catch (error) {
+        console.error('Error in fetchLocation:', error);
+        throw error;
     }
-  
-    static async updateCurrentLocation(driverId, newLocation) {
-      try {
-        const newH3Index = h3.geoToH3(newLocation.lat, newLocation.lng, resolution);
-  
-        const query = 'UPDATE drivers SET current_location = $1, grid_cell_id = $2 WHERE driver_id = $3';
-        const values = [newLocation, newH3Index, driverId];
-  
-        await db.query(query, values);
-      } catch (error) {
-        throw new Error('Error updating driver location');
-      }
-    }
+}
+static async updateCurrentLocation(driverId, newLocation) {
+  const h3Index = h3.geoToH3(newLocation.lat, newLocation.lng, 9);
+  const query = `
+      UPDATE drivers 
+      SET current_location = ST_SetSRID(ST_MakePoint($1, $2), 4326), 
+          grid_cell_id = $3 
+      WHERE driver_id = $4`;
+  await db.query(query, [newLocation.lng, newLocation.lat, h3Index, driverId]);
+}
 
-    static async fetchServiceRates(driverId) {
-      const query = `SELECT * FROM service_rates WHERE driver_id = $1`;
-      const result = await db.query(query, [driverId]);
-      return result.rows;
-    }
+static async findNearbyDrivers(h3Indices, serviceType) {
+  try {
+      const query = `
+          SELECT * FROM drivers
+          WHERE grid_cell_id = ANY($1) AND
+                service_preference = $2 AND
+                available = true`;
+      const values = [h3Indices, serviceType];
+      const result = await db.query(query, values);
+      return result.rows.map(row => new Driver(row));
+  } catch (error) {
+      console.error('Error in findNearbyDrivers:', error);
+      throw error;
+  }
+}
 
-    static async fetchAvailability(driverId) {
-      const query = `SELECT available FROM drivers WHERE driver_id = $1`;
-      const result = await db.query(query, [driverId]);
-      return result.rows[0]?.available;
-    }
 }
 
   module.exports = Driver;
