@@ -3,11 +3,11 @@ import axios from 'axios';
 import { fetchVehicleMakes, fetchVehicleModels } from '../api/nhtsaApi';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
+import { TextField, Button, Select, MenuItem, InputLabel, FormControl, Slider, Typography, Box, Container } from '@mui/material';
 
 
 
 export function DriverSignUpForm() {
-    const { signIn } = useContext(AuthContext);
     const [formData, setFormData] = useState({
       firstName: '',
       lastName: '',
@@ -16,7 +16,7 @@ export function DriverSignUpForm() {
       password: '',
       phoneNumber: '',
       address: '',
-      servicePreference: '',
+      serviceType: '',
       vehicleYear: '',
       vehicleMake: '',
       vehicleModel: '',
@@ -26,7 +26,7 @@ export function DriverSignUpForm() {
       preferredPayloadCapacity: '',
       preferredTowingCapacity: ''
     });
-    const [servicePreference, setServicePreference] = useState('');
+    const [serviceType, setserviceType] = useState('');
     const navigate = useNavigate();
     const [vehicleYears] = useState(Array.from({length: 45}, (_, i) => i + 1980));
     const [vehicleMakes, setVehicleMakes] = useState([]);
@@ -57,8 +57,8 @@ useEffect(() => {
 
 const handleChange = (e) => {
   setFormData({ ...formData, [e.target.name]: e.target.value });
-  if (e.target.name === 'servicePreference') {
-    setServicePreference(e.target.value);
+  if (e.target.name === 'serviceType') {
+    setserviceType(e.target.value);
   }
 };
 
@@ -75,9 +75,7 @@ const handleChange = (e) => {
       if (signUpResponse.status === 201) {
         console.log('Sign-up successful:', signUpResponse.data);
         
-        const { user, token } = signUpResponse.data;
-        signIn({ ...user, token }); 
-        navigate('/home');
+        navigate('/signin');
       } else {
         console.error('Sign-up was not successful. Status:', signUpResponse.status);
       }
@@ -90,111 +88,103 @@ const handleChange = (e) => {
     }
   };
   const shouldDisplayField = (field) => {
-    if (servicePreference === 'both') return true;
-    if (servicePreference === 'towing' && field.includes('Towing')) return true;
-    if (servicePreference === 'hauling' && field.includes('Payload')) return true;
+    if (serviceType === 'hauling_and_towing') return true;
+    if (serviceType === 'towing' && field.includes('Towing')) return true;
+    if (serviceType === 'hauling' && field.includes('Payload')) return true;
     return false;
   };
-    return (
-      <form onSubmit={handleSubmit}>
-        <input type="text" name="firstName" placeholder="First Name" onChange={handleChange} />
-        <input type="text" name="lastName" placeholder="Last Name" onChange={handleChange} />
-        <input type="text" name="username" placeholder="Username" onChange={handleChange} />
-        <input type="email" name="email" placeholder="Email" onChange={handleChange} />
-        <input type="password" name="password" placeholder="Password" onChange={handleChange} />
-        <input type="text" name="phoneNumber" placeholder="Phone Number" onChange={handleChange} />
-        <input type="text" name="address" placeholder="Address" onChange={handleChange} />
-        <input type="text" name="city" placeholder="City" onChange={handleChange} />
-        <input type="text" name="state" placeholder="State" onChange={handleChange} />
-        <input type="text" name="zipCode" placeholder="Zip Code" onChange={handleChange} />
-        <select name="servicePreference" onChange={handleChange}>
-          <option value="">Service Preference</option>
-          <option value="towing">Towing</option>
-          <option value="hauling">Hauling</option>
-          <option value="both">Both</option>
-        </select>
-        <select name="vehicleYear" onChange={handleChange}>
-                <option value="">Select Year</option>
-                {vehicleYears.map(year => (
-                    <option key={year} value={year}>{year}</option>
-                ))}
-            </select>
-        <select name="vehicleMake" onChange={handleChange}>
-        <option value="">Select Make</option>
-        {vehicleMakes.length > 0 && vehicleMakes.map(make => (
-          <option key={make} value={make}>{make}</option>
-        ))}
-        </select>
-        <select name="vehicleModel" onChange={handleChange}>
-        <option value="">Select Model</option>
-        {vehicleModels.length > 0 && vehicleModels.map(model => (
-          <option key={model} value={model}>{model}</option>
-        ))}
-        </select>
-        <input type="text" name="vehicleTrim" placeholder="Vehicle Trim (optional)" onChange={handleChange} />
-        {shouldDisplayField('VehiclePayloadCapacity') && (
-  <div>
-    <label htmlFor="vehiclePayloadCapacity">Vehicle Payload Capacity(lb): {formData.vehiclePayloadCapacity}</label>
-    <input
-      type="range"
-      name="vehiclePayloadCapacity"
-      min="0"
-      max="8000"
-      step="100"
-      onChange={handleChange}
-      value={formData.vehiclePayloadCapacity}
-    />
-  </div>
-)}
-
-{shouldDisplayField('VehicleTowingCapacity') && (
-  <div>
-    <label htmlFor="vehicleTowingCapacity">Vehicle Towing Capacity(lb): {formData.vehicleTowingCapacity}</label>
-    <input
-      type="range"
-      name="vehicleTowingCapacity"
-      min="0"
-      max="35000"
-      step="100"
-      onChange={handleChange}
-      value={formData.vehicleTowingCapacity}
-    />
-  </div>
-)}
-
-{shouldDisplayField('PreferredPayloadCapacity') && (
-  <div>
-    <label htmlFor="preferredPayloadCapacity">Preferred Payload Capacity(lb): {formData.preferredPayloadCapacity}</label>
-    <input
-      type="range"
-      name="preferredPayloadCapacity"
-      min="0"
-      max="8000"
-      step="100"
-      onChange={handleChange}
-      value={formData.preferredPayloadCapacity}
-    />
-  </div>
-)}
-
-{shouldDisplayField('PreferredTowingCapacity') && (
-  <div>
-    <label htmlFor="preferredTowingCapacity">Preferred Towing Capacity(lb): {formData.preferredTowingCapacity}</label>
-    <input
-      type="range"
-      name="preferredTowingCapacity"
-      min="0"
-      max="35000"
-      step="100"
-      onChange={handleChange}
-      value={formData.preferredTowingCapacity}
-    />
-  </div>
-)}
-
-      <button type="submit">Sign Up</button>
-    </form>
-    );
+  return (
+    <Container maxWidth="sm">
+      <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Typography component="h1" variant="h5" color="textSecondary">
+          Driver Sign Up
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <TextField label="First Name" name="firstName" onChange={handleChange} fullWidth margin="normal" variant="outlined" color="secondary" />
+          <TextField label="Last Name" name="lastName" onChange={handleChange} fullWidth margin="normal" variant="outlined" color="secondary" />
+          <TextField label="Username" name="username" onChange={handleChange} fullWidth margin="normal" variant="outlined" color="secondary" />
+          <TextField label="Email" name="email" type="email" onChange={handleChange} fullWidth margin="normal" variant="outlined" color="secondary" />
+          <TextField label="Password" name="password" type="password" onChange={handleChange} fullWidth margin="normal" variant="outlined" color="secondary" />
+          <TextField label="Phone Number" name="phoneNumber" onChange={handleChange} fullWidth margin="normal" variant="outlined" color="secondary" />
+          <TextField label="Address" name="address" onChange={handleChange} fullWidth margin="normal" variant="outlined" color="secondary" />
+          <TextField label="City" name="city" onChange={handleChange} fullWidth margin="normal" variant="outlined" color="secondary" />
+          <TextField label="State" name="state" onChange={handleChange} fullWidth margin="normal" variant="outlined" color="secondary" />
+          <TextField label="Zip Code" name="zipCode" onChange={handleChange} fullWidth margin="normal" variant="outlined" color="secondary" />
+  
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Service Preference</InputLabel>
+            <Select name="serviceType" value={formData.serviceType} onChange={handleChange} color="secondary">
+              <MenuItem value="towing">Towing</MenuItem>
+              <MenuItem value="hauling">Hauling</MenuItem>
+              <MenuItem value="hauling_and_towing">Both</MenuItem>
+            </Select>
+          </FormControl>
+  
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Vehicle Year</InputLabel>
+            <Select name="vehicleYear" value={formData.vehicleYear} onChange={handleChange} color="secondary">
+              {vehicleYears.map(year => (
+                <MenuItem key={year} value={year}>{year}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+  
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Vehicle Make</InputLabel>
+            <Select name="vehicleMake" value={formData.vehicleMake} onChange={handleChange} color="secondary">
+              {vehicleMakes.map(make => (
+                <MenuItem key={make} value={make}>{make}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+  
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Vehicle Model</InputLabel>
+            <Select name="vehicleModel" value={formData.vehicleModel} onChange={handleChange} color="secondary">
+              {vehicleModels.map(model => (
+                <MenuItem key={model} value={model}>{model}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+  
+          <TextField label="Vehicle Trim (optional)" name="vehicleTrim" onChange={handleChange} fullWidth margin="normal" variant="outlined" color="secondary" />
+  
+          {shouldDisplayField('VehiclePayloadCapacity') && (
+            <Box margin="normal">
+              <Typography gutterBottom>Vehicle Payload Capacity (lb): {formData.vehiclePayloadCapacity}</Typography>
+              <Slider name="vehiclePayloadCapacity" min={0} max={8000} step={100} value={formData.vehiclePayloadCapacity || 0} onChange={handleChange} valueLabelDisplay="auto" />
+            </Box>
+          )}
+  
+          {shouldDisplayField('VehicleTowingCapacity') && (
+            <Box margin="normal">
+              <Typography gutterBottom>Vehicle Towing Capacity (lb): {formData.vehicleTowingCapacity}</Typography>
+              <Slider name="vehicleTowingCapacity" min={0} max={35000} step={100} value={formData.vehicleTowingCapacity || 0} onChange={handleChange} valueLabelDisplay="auto" />
+            </Box>
+          )}
+  
+          {shouldDisplayField('PreferredPayloadCapacity') && (
+            <Box margin="normal">
+              <Typography gutterBottom>Preferred Payload Capacity (lb): {formData.preferredPayloadCapacity}</Typography>
+              <Slider name="preferredPayloadCapacity" min={0} max={8000} step={100} value={formData.preferredPayloadCapacity || 0} onChange={handleChange} valueLabelDisplay="auto" />
+            </Box>
+          )}
+  
+          {shouldDisplayField('PreferredTowingCapacity') && (
+            <Box margin="normal">
+              <Typography gutterBottom>Preferred Towing Capacity (lb): {formData.preferredTowingCapacity}</Typography>
+              <Slider name="preferredTowingCapacity" min={0} max={35000} step={100} value={formData.preferredTowingCapacity || 0} onChange={handleChange} valueLabelDisplay="auto" />
+            </Box>
+          )}
+  
+          <Button variant="contained" color="secondary" type="submit" fullWidth sx={{ mt: 3, mb: 2 }}>
+            Sign Up
+          </Button>
+        </Box>
+      </Box>
+    </Container>
+  );
+  
   }
 
 export default DriverSignUpForm;

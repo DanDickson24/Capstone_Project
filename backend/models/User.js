@@ -1,6 +1,8 @@
 const db = require('../db');
 const bcrypt = require('bcrypt');
-const Vehicle = require('./Vehicle'); 
+const Driver = require('./Driver');
+const Load = require('./Load');
+const Vehicle = require('./Vehicle');
 
 class User {
   constructor(userData) {
@@ -72,8 +74,10 @@ static async createDriver(userData) {
 
     const newDriver = new User(userResult.rows[0]);
 
-    const driverQuery = 'INSERT INTO drivers (driver_id) VALUES ($1)';
-    await db.query(driverQuery, [newDriver.user_id]);
+    const driverQuery = 'INSERT INTO drivers (driver_id, service_type) VALUES ($1, $2)';
+    console.log('Creating driver record for user_id:', newDriver.user_id);
+    await db.query(driverQuery, [newDriver.user_id, userData.serviceType]);
+    console.log('Driver record created successfully for user_id:', newDriver.user_id);
 
 
     await Vehicle.createVehicle(newDriver.user_id, userData);
@@ -120,16 +124,69 @@ static async fetchLocation(userId) {
 
 static async findByUserId(userId) {
   try {
-      const query = `SELECT * FROM users WHERE user_id = $1`;
-      const result = await db.query(query, [userId]);
-      if (result.rows.length === 0) return null;
-      return new User(result.rows[0]);
-  } catch (error) {
-      console.error("Error in findByUserId:", error);
-      throw error;
+    console.log(`Finding user by ID: ${userId}`);
+    const query = `SELECT * FROM users WHERE user_id = $1`;
+    const result = await db.query(query, [userId]);
+    if (result.rows.length === 0) {
+      console.log(`User not found for userId: ${userId}`);
+      return null;
+  }
+
+  const user = new User(result.rows[0]);
+  console.log(`User found for userId ${userId}:`, user);
+
+  if (user.user_type === 'driver') {
+    console.log(`Fetching vehicle information for driverId: ${userId}`);
+    const vehicleInfo = await Vehicle.fetchByDriverId(userId);
+    console.log(`Vehicle information for driverId ${userId}:`, vehicleInfo);
+    user.vehicleInfo = vehicleInfo;
+  }
+
+  return user;
+} catch (error) {
+  console.error("Error in findByUserId:", error);
+  throw error;
+}
+}
+static async getJourneyData(userId) {
+  const user = await this.findByUserId(userId);
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  if (user.user_type === 'customer') {
+    return await this.getCustomerJourneyData(userId);
+  } else if (user.user_type === 'driver') {
+    return await this.getDriverJourneyData(userId);
+  } else {
+    throw new Error('Access denied');
   }
 }
 
+static async getCustomerJourneyData(userId) {
+  const latestLoad = await Load.findLatestLoadByCustomerId(userId);
+  if (!latestLoad) {
+    return { latestLoad: null, nearbyDrivers: [] };
   }
-  
+
+  const nearbyDrivers = await Driver.findNearbyDriversForLoad(latestLoad);
+  return { latestLoad, nearbyDrivers };
+}
+
+static async getDriverJourneyData(userId) {
+  const driverLocation = await Driver.fetchLocation(userId);
+  if (!driverLocation) {
+    return { driverLocation: null, loadRequests: [] };
+  }
+
+  const vehicleInfo = await Vehicle.fetchByDriverId(userId);
+  if (!vehicleInfo) {
+    return { driverLocation, loadRequests: [] };
+  }
+
+  const loadRequests = await Load.findNearbyLoadRequests(driverLocation, vehicleInfo);
+  return { driverLocation, vehicleInfo, loadRequests };
+}
+}
+
   module.exports = User;

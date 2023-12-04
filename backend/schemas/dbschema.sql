@@ -22,7 +22,7 @@ CREATE TABLE drivers (
     current_location GEOGRAPHY(Point, 4326),
     h3_index VARCHAR(50),
     grid_cell_id VARCHAR(50),
-    service_preference VARCHAR(50) CHECK (service_preference IN ('towing', 'hauling', 'both')),
+    service_type VARCHAR(50) CHECK (service_type IN ('hauling', 'towing', 'hauling_and_towing')),
     available BOOLEAN NOT NULL DEFAULT true
 );
 
@@ -78,8 +78,12 @@ CREATE TABLE loads (
     service_type VARCHAR(50) CHECK (service_type IN ('hauling', 'towing', 'hauling_and_towing')),
     pickup_location GEOGRAPHY(Point, 4326),
     dropoff_location GEOGRAPHY(Point, 4326),
-    h3_index VARCHAR(50),
+    h3_index VARCHAR(50)
+    grid_cell_id VARCHAR(50),
     status VARCHAR(50) CHECK (status IN ('pending', 'assigned', 'in-transit', 'completed', 'canceled')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+

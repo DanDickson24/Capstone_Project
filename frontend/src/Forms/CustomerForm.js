@@ -2,9 +2,9 @@ import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
+import { TextField, Button, Box, Container, Typography } from '@mui/material';
 
 export function CustomerSignUpForm() {
-    const { signIn } = useContext(AuthContext);
     const [formData, setFormData] = useState({
       firstName: '',
       lastName: '',
@@ -32,9 +32,8 @@ export function CustomerSignUpForm() {
         if (signUpResponse.status === 201) {
           console.log('Sign-up successful:', signUpResponse.data);
           
-          const { user, token } = signUpResponse.data;
-          signIn({ ...user, token });
-          navigate('/home');
+
+          navigate('/signin');
         } else {
         console.error('Sign-up was not successful. Status:', signUpResponse.status);
       }
@@ -47,21 +46,113 @@ export function CustomerSignUpForm() {
     }
   };
   
-    return (
-      <form onSubmit={handleSubmit}>
-        <input type="text" name="firstName" placeholder="First Name" onChange={handleChange} />
-        <input type="text" name="lastName" placeholder="Last Name" onChange={handleChange} />
-        <input type="text" name="username" placeholder="Username" onChange={handleChange} />
-        <input type="email" name="email" placeholder="Email" onChange={handleChange} />
-        <input type="password" name="password" placeholder="Password" onChange={handleChange} />
-        <input type="text" name="phoneNumber" placeholder="Phone Number" onChange={handleChange} />
-        <input type="text" name="address" placeholder="Address" onChange={handleChange} />
-        <input type="text" name="city" placeholder="City" onChange={handleChange} />
-        <input type="text" name="state" placeholder="State" onChange={handleChange} />
-        <input type="text" name="zipCode" placeholder="Zip Code" onChange={handleChange} />
-        <button type="submit">Sign Up</button>
-      </form>
-    );
+  return (
+    <Container maxWidth="sm">
+      <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Typography component="h1" variant="h5" color="textSecondary">
+          Customer Sign Up
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <TextField
+            label="First Name"
+            variant="outlined"
+            name="firstName"
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            color="secondary"
+          />
+          <TextField
+            label="Last Name"
+            variant="outlined"
+            name="lastName"
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            color="secondary"
+          />
+          <TextField
+            label="Username"
+            variant="outlined"
+            name="username"
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            color="secondary"
+          />
+          <TextField
+            label="Email"
+            variant="outlined"
+            name="email"
+            type="email"
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            color="secondary"
+          />
+          <TextField
+            label="Password"
+            variant="outlined"
+            name="password"
+            type="password"
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            color="secondary"
+          />
+          <TextField
+            label="Phone Number"
+            variant="outlined"
+            name="phoneNumber"
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            color="secondary"
+          />
+          <TextField
+            label="Address"
+            variant="outlined"
+            name="address"
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            color="secondary"
+          />
+          <TextField
+            label="City"
+            variant="outlined"
+            name="city"
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            color="secondary"
+          />
+          <TextField
+            label="State"
+            variant="outlined"
+            name="state"
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            color="secondary"
+          />
+          <TextField
+            label="Zip Code"
+            variant="outlined"
+            name="zipCode"
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            color="secondary"
+          />
+          <Button variant="contained" color="secondary" type="submit" fullWidth sx={{ mt: 3, mb: 2 }}>
+            Sign Up
+          </Button>
+        </Box>
+      </Box>
+    </Container>
+  );
+  
   }
 
   export default CustomerSignUpForm;

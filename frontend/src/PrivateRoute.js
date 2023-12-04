@@ -2,14 +2,15 @@ import React, { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AuthContext } from './AuthContext';
 
-const PrivateRoute = ({ element: Component, ...rest }) => {
+const PrivateRoute = ({ element }) => {
   const { user } = useContext(AuthContext);
 
   if (!user) {
     return <Navigate to="/signin" />;
   }
 
-  return <Component {...rest} />;
+  // Directly render the JSX element
+  return element;
 };
 
 export default PrivateRoute;

@@ -9,6 +9,8 @@ import { AuthProvider } from './AuthContext';
 import LoadForm from './Forms/LoadForm';
 import Journey from './Journey';
 import MyLocation from './MyLocation';
+import Layout from './Layout';
+import EditVehicle from './EditVehicle';
 
 function App() {
   return (
@@ -18,10 +20,11 @@ function App() {
           <Route path="/" element={<Root />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
-          <Route path="/home" element={<PrivateRoute element={Home} />} />
-          <Route path="/load" element={<PrivateRoute element={LoadForm} />} />
-          <Route path="/journey" element={<PrivateRoute element={Journey} />} />
-          <Route path="/mylocation" element={<MyLocation />} /> 
+          <Route path="/home" element={<PrivateRoute element={<Layout><Home /></Layout>} />} />
+          <Route path="/editvehicle" element={<PrivateRoute element={<Layout><EditVehicle /></Layout>} />} />
+          <Route path="/load" element={<PrivateRoute element={<Layout><LoadForm /></Layout>} />} />
+          <Route path="/journey" element={<PrivateRoute element={<Layout><Journey /></Layout>} />} />
+          <Route path="/mylocation" element={<PrivateRoute element={<Layout><MyLocation /></Layout>} />} /> 
         </Routes>
       </Router>
     </AuthProvider>

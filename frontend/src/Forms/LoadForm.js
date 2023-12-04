@@ -3,7 +3,7 @@ import { AuthContext } from '../AuthContext';
 import { getCoordinatesFromAddress } from '../api/mapboxApi';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import { Container, Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem, Button, Grid } from '@mui/material';
 
 function LoadForm() {
   const navigate = useNavigate();
@@ -12,6 +12,7 @@ function LoadForm() {
     serviceType: '',
     loadSize: '',
     loadWeight: '',
+    loadDescription: '', 
     pickupAddress: '',
     pickupCity: '',
     pickupState: '',
@@ -52,7 +53,7 @@ function LoadForm() {
       headers: { Authorization: `Bearer ${token}` }
     };
     const loadData = {
-      description: `${formData.loadSize} size, ${formData.loadWeight} weight`,
+      description: formData.loadDescription, 
       load_size: formData.loadSize,
       load_weight: formData.loadWeight,
       need_hauling: formData.serviceType === 'hauling' || formData.serviceType === 'both',
@@ -71,25 +72,58 @@ function LoadForm() {
     }
   };
   return (
-    <form onSubmit={handleSubmit}>
-      <select name="serviceType" onChange={(e) => setFormData({ ...formData, serviceType: e.target.value })}>
-        <option value="">I need...</option>
-        <option value="hauling">Hauling</option>
-        <option value="towing">Towing</option>
-        <option value="both">Both</option>
-      </select>
-      <input type="text" name="loadSize" placeholder="Load Size" onChange={(e) => setFormData({ ...formData, loadSize: e.target.value })} />
-      <input type="number" name="loadWeight" placeholder="Load Weight" onChange={(e) => setFormData({ ...formData, loadWeight: e.target.value })} />
-      <input type="text" name="pickupAddress" placeholder="Pickup Address" onChange={handleLocationChange} />
-      <input type="text" name="pickupCity" placeholder="Pickup City" onChange={handleLocationChange} />
-      <input type="text" name="pickupState" placeholder="Pickup State" onChange={handleLocationChange} />
-      <input type="text" name="pickupZip" placeholder="Pickup Zip Code" onChange={handleLocationChange} />
-      <input type="text" name="dropoffAddress" placeholder="Dropoff Address" onChange={handleLocationChange} />
-      <input type="text" name="dropoffCity" placeholder="Dropoff City" onChange={handleLocationChange} />
-      <input type="text" name="dropoffState" placeholder="Dropoff State" onChange={handleLocationChange} />
-      <input type="text" name="dropoffZip" placeholder="Dropoff Zip Code" onChange={handleLocationChange} />
-      <button type="submit">Haul my stuff!</button>
-    </form>
+    <Container maxWidth="lg">
+      <Box sx={{ mt: 4 }}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Load Details
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={4}>
+              <Typography variant="h6">Load Info:</Typography>
+              <FormControl fullWidth margin="normal">
+                <InputLabel>I need...</InputLabel>
+                <Select name="serviceType" value={formData.serviceType} onChange={(e) => setFormData({ ...formData, serviceType: e.target.value })} color="secondary">
+                  <MenuItem value="hauling">Hauling</MenuItem>
+                  <MenuItem value="towing">Towing</MenuItem>
+                  <MenuItem value="hauling_and_towing">Both</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl fullWidth margin="normal">
+              <InputLabel>Size</InputLabel>
+              <Select name="loadSize" value={formData.loadSize} onChange={(e) => setFormData({ ...formData, loadSize: e.target.value })} color="secondary">
+                <MenuItem value="Small">Small</MenuItem>
+                <MenuItem value="Medium">Medium</MenuItem>
+                <MenuItem value="Large">Large</MenuItem>
+              </Select>
+            </FormControl>
+
+            <TextField name="loadWeight" label="Load Weight(lb)" variant="outlined" fullWidth margin="normal" type="number" onChange={(e) => setFormData({ ...formData, loadWeight: e.target.value })} color="secondary" />
+            <TextField name="loadDescription" label="Load Description" variant="outlined" fullWidth margin="normal"onChange={(e) => setFormData({ ...formData, loadDescription: e.target.value })} color="secondary"/>
+          </Grid>
+
+            <Grid item xs={12} md={4}>
+              <Typography variant="h6">Pickup Info:</Typography>
+              <TextField name="pickupAddress" label="Pickup Address" variant="outlined" fullWidth margin="normal" onChange={handleLocationChange} color="secondary" />
+              <TextField name="pickupCity" label="Pickup City" variant="outlined" fullWidth margin="normal" onChange={handleLocationChange} color="secondary" />
+              <TextField name="pickupState" label="Pickup State" variant="outlined" fullWidth margin="normal" onChange={handleLocationChange} color="secondary" />
+              <TextField name="pickupZip" label="Pickup Zip Code" variant="outlined" fullWidth margin="normal" onChange={handleLocationChange} color="secondary" />
+            </Grid>
+
+            <Grid item xs={12} md={4}>
+              <Typography variant="h6">Drop-off Info:</Typography>
+              <TextField name="dropoffAddress" label="Drop-off Address" variant="outlined" fullWidth margin="normal" onChange={handleLocationChange} color="secondary" />
+              <TextField name="dropoffCity" label="Drop-off City" variant="outlined" fullWidth margin="normal" onChange={handleLocationChange} color="secondary" />
+              <TextField name="dropoffState" label="Drop-off State" variant="outlined" fullWidth margin="normal" onChange={handleLocationChange} color="secondary" />
+              <TextField name="dropoffZip" label="Drop-off Zip Code" variant="outlined" fullWidth margin="normal" onChange={handleLocationChange} color="secondary" />
+            </Grid>
+          </Grid>
+          <Button type="submit" variant="contained" color="secondary" fullWidth sx={{ mt: 3, mb: 2 }}>
+            Haul my stuff!
+          </Button>
+        </form>
+      </Box>
+    </Container>
   );
 }
 

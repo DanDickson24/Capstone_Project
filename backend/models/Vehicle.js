@@ -23,12 +23,47 @@ class Vehicle {
     try {
       const query = `SELECT * FROM vehicles WHERE driver_id = $1`;
       const result = await db.query(query, [driverId]);
-      return result.rows[0]; 
+      if (result.rows.length === 0) {
+        console.log(`No vehicle found for driverId: ${driverId}`);
+        return null;
+      }
+      return result.rows[0];
     } catch (error) {
-      console.error("Error in fetchByDriverId:", error);
+      console.error('Error in fetchByDriverId:', error);
       throw error;
     }
   }
+  static async updateVehicle(driverId, vehicleData) {
+    try {
+      const query = `
+        UPDATE vehicles 
+        SET vehicle_year = $1, 
+            vehicle_make = $2, 
+            vehicle_model = $3, 
+            vehicle_trim = $4, 
+            vehicle_payload_capacity = $5, 
+            vehicle_towing_capacity = $6, 
+            user_set_payload_capacity = $7, 
+            user_set_towing_capacity = $8 
+        WHERE driver_id = $9`;
+      const values = [
+        vehicleData.vehicleYear, 
+        vehicleData.vehicleMake, 
+        vehicleData.vehicleModel, 
+        vehicleData.vehicleTrim, 
+        vehicleData.vehiclePayloadCapacity, 
+        vehicleData.vehicleTowingCapacity, 
+        vehicleData.preferredPayloadCapacity, 
+        vehicleData.preferredTowingCapacity, 
+        driverId
+      ];
+      await db.query(query, values);
+    } catch (error) {
+      console.error('Error in updateVehicle:', error);
+      throw error;
+    }
   }
+}
+
   
   module.exports = Vehicle;

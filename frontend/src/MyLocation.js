@@ -4,6 +4,7 @@ import { AuthContext } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { getCoordinatesFromAddress } from './api/mapboxApi';
+import { Container, Typography } from '@mui/material';
 
 const MyLocation = () => {
     const { user } = useContext(AuthContext);
@@ -29,11 +30,13 @@ const MyLocation = () => {
     };
 
     return (
-        <div>
-        <h1>Update My Location</h1>
-        <DriverLocationForm onSubmit={handleDriverLocationSubmit} />
-      </div>
-    );
-};
+        <Container maxWidth="sm">
+          <Typography variant="h4" gutterBottom>
+            Update My Location
+          </Typography>
+          <DriverLocationForm onSubmit={handleDriverLocationSubmit} />
+        </Container>
+      );
+    };
 
 export default MyLocation;

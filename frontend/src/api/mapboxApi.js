@@ -21,4 +21,16 @@ const getCoordinatesFromAddress = async (address) => {
     }
   };
 
-export { getCoordinatesFromAddress, MAPBOX_ACCESS_TOKEN };
+  const getRouteData = async (startLng, startLat, endLng, endLat) => {
+    const directionsUrl = `https://api.mapbox.com/directions/v5/mapbox/driving/${startLng},${startLat};${endLng},${endLat}?access_token=${MAPBOX_ACCESS_TOKEN}`;
+    try {
+        const response = await axios.get(directionsUrl);
+        return response.data.routes[0];
+    } catch (error) {
+        console.error('Error fetching route data from MapBox API:', error);
+        return null;
+    }
+};
+
+export { getRouteData, getCoordinatesFromAddress, MAPBOX_ACCESS_TOKEN };
+

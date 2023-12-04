@@ -1,13 +1,11 @@
 import React, { useContext } from 'react';
-import Navbar from './NavBar';
 import { AuthContext } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { Container, Box, Typography, Button } from '@mui/material';
 
 function Home() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-
-  console.log("User type in Home:", user ? user.user_type : "No user");
 
   const handleButtonClick = () => {
     if (user && user.user_type === 'customer') {
@@ -17,16 +15,32 @@ function Home() {
     }
   };
 
+  const handleEditVehicleButtonClick = () => {
+    if (user && user.user_type === 'driver') {
+      navigate('/editvehicle');
+    }
+  };
+
   return (
-    <div>
-      <Navbar />
-      <h1>Home Page</h1>
-      {user && (
-        <button onClick={handleButtonClick}>
-          {user.user_type === 'customer' ? 'Create New Load To Haul' : 'Find Customers'}
-        </button>
-      )}
-    </div>
+    <Container maxWidth="sm">
+      <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Home Page
+        </Typography>
+        {user && (
+          <>
+            <Button variant="contained" color="secondary" onClick={handleButtonClick}>
+              {user.user_type === 'customer' ? 'Create New Load To Haul' : 'Find Customers'}
+            </Button>
+            {user.user_type === 'driver' && (
+              <Button variant="contained" color="secondary" onClick={handleEditVehicleButtonClick} sx={{ mt: 2 }}>
+                Edit Vehicle Info
+              </Button>
+            )}
+          </>
+        )}
+      </Box>
+    </Container>
   );
 }
 

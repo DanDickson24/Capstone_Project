@@ -50,7 +50,8 @@ router.post('/login', async (req, res) => {
     if (user.user_type === 'driver') {
       const vehicleInfo = await Vehicle.fetchByDriverId(user.user_id);
       if (!vehicleInfo) {
-        return res.status(500).json({ message: 'Vehicle information not found for driver' });
+        console.log('Vehicle information not found for driver:', user.user_id);
+        return res.status(404).json({ message: 'Vehicle information not found' });
       }
       user.vehicleInfo = vehicleInfo;
     }
@@ -73,23 +74,29 @@ router.get('/home', verifyToken, (req, res) => {
 
 
 router.post('/load', verifyToken, async (req, res) => {
-    try {
-      const loadDetails = req.body;
-      console.log('Creating load with details:', loadDetails);
-      const load = await Load.createLoad(loadDetails);
-      res.status(201).json({ message: 'Load created successfully', load });
-    } catch (error) {
-      console.error('Error in /load route:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  });
+  try {
+    console.log('Received load request body:', req.body); 
+
+    const loadDetails = {
+      ...req.body,
+    };
+
+    console.log('Modified load details:', loadDetails); 
+
+    const load = await Load.createLoad(loadDetails);
+    res.status(201).json({ message: 'Load created successfully', load });
+  } catch (error) {
+    console.error('Error in /load route:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
   router.post('/updateDriverLocation', verifyToken, async (req, res) => {
     try {
-        console.log('Update Driver Location Request Received:', req.body); 
+        console.log('Update Driver Location Request Received:', req.body);
 
         const { driverId, newLocation } = req.body;
-        if (!driverId || !newLocation || !newLocation.lat || !newLocation.lng) {
+        if (!driverId || !newLocation || typeof newLocation.lat !== 'number' || typeof newLocation.lng !== 'number') {
             console.log('Invalid request body:', req.body);
             return res.status(400).json({ error: 'Invalid request data' });
         }
@@ -102,53 +109,150 @@ router.post('/load', verifyToken, async (req, res) => {
     }
 });
 
+// router.get('/journey', verifyToken, async (req, res) => {
+//   try {
+//     const user = await User.findByUserId(req.user.userId);
+//     console.log(`User type: ${user.user_type}, User ID: ${req.user.userId}`);
 
-  router.get('/journey', verifyToken, async (req, res) => {
+//     if (!user) {
+//       console.log('User not found:', req.user.userId);
+//       return res.status(404).json({ message: 'User not found' });
+//     }
+
+//     if (user.user_type === 'customer') {
+//       const latestLoad = await Load.findLatestLoadByCustomerId(req.user.userId);
+
+//       if (!latestLoad) {
+//         console.log('No recent load found for customer:', req.user.userId);
+//         return res.status(404).json({ message: 'No recent load found' });
+//       }
+
+//       const vehiclePayloadCapacity = latestLoad.need_hauling ? parseFloat(latestLoad.load_weight) : null;
+//       const vehicleTowingCapacity = latestLoad.need_towing ? parseFloat(latestLoad.load_weight) : null;
+
+//       const nearbyDrivers = await Driver.findNearbyDrivers(
+//         { lat: latestLoad.pickup_lat, lng: latestLoad.pickup_lng },
+//         latestLoad.service_type,
+//         vehiclePayloadCapacity,
+//         vehicleTowingCapacity
+//       );
+
+//       res.json({ 
+//         nearbyDrivers: nearbyDrivers.map(driver => ({
+//           driver_id: driver.driver_id,
+//           first_name: driver.first_name,
+//           last_name: driver.last_name,
+//           lat: driver.lat,
+//           lng: driver.lng,
+//           h3_index: driver.grid_cell_id,
+//           vehicle_make: driver.vehicle_make,
+//           vehicle_model: driver.vehicle_model
+//         })),
+//         latestLoad
+//       });
+//     } else if (user.user_type === 'driver') {
+//       const driverLocation = await Driver.fetchLocation(req.user.userId);
+//       if (!driverLocation) {
+//         return res.status(400).json({ message: 'Driver location not found' });
+//       }
+
+//       const vehicleInfo = await Vehicle.fetchByDriverId(req.user.userId);
+//       if (!vehicleInfo) {
+//         return res.status(400).json({ message: 'Vehicle information not found' });
+//       }
+
+//       const loadRequests = await Load.findNearbyLoadRequests(
+//         driverLocation,  
+//         vehicleInfo
+//       );
+
+//       const loadRequestsWithLocation = loadRequests.map(load => ({
+//         load_id: load.load_id,
+//         description: load.description,
+//         pickup_lng: load.pickup_lng, 
+//         pickup_lat: load.pickup_lat,
+//       }));
+
+//       res.json({
+//         nearbyLoadRequests: loadRequestsWithLocation,
+//         driverLocation,
+//         vehicleInfo
+//       });
+//     } else {
+//       res.status(403).json({ message: 'Access denied' });
+//     }
+//   } catch (error) {
+//     console.error('Error in /journey route:', error);
+//     res.status(500).json({ error: 'Internal Server Error', details: error.message });
+//   }
+// });
+
+router.get('/journey', verifyToken, async (req, res) => {
+  try {
+    const journeyData = await User.getJourneyData(req.user.userId);
+    res.json(journeyData);
+  } catch (error) {
+    console.error('Error in /journey route:', error);
+    res.status(error.status || 500).json({ error: error.message });
+  }
+});
+
+router.post('/editvehicle/:driverId', verifyToken, async (req, res) => {
+  try {
+    const driverId = req.params.driverId;
+    const vehicleData = req.body;
+
+    await Vehicle.updateVehicle(driverId, vehicleData);
+
+    res.status(200).json({ message: 'Vehicle updated successfully' });
+  } catch (error) {
+    console.error('Error in /user/editvehicle/:driverId route:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+router.get('/vehicles/:driverId', verifyToken, async (req, res) => {
+  try {
+    const driverId = req.params.driverId;
+    const vehicleInfo = await Vehicle.fetchByDriverId(driverId);
+
+    if (!vehicleInfo) {
+      return res.status(404).json({ message: 'Vehicle information not found' });
+    }
+
+    res.json(vehicleInfo);
+  } catch (error) {
+    console.error('Error in /vehicles/:driverId route:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+
+  router.get('/serviceType/:driverId', verifyToken, async (req, res) => {
+    console.log("Driver ID:", req.params.driverId);
     try {
-      const user = await User.findByUserId(req.user.userId);
-      if (!user) {
-        console.log('User not found:', req.user.userId);
-        return res.status(404).json({ message: 'User not found' });
+      const driverId = req.params.driverId;
+      const serviceType = await Driver.fetchServiceType(driverId);
+  
+      if (!serviceType) {
+        return res.status(404).json({ message: 'Service type not found' });
       }
   
-      if (user.user_type === 'customer') {
-        const latestLoad = await Load.findLatestLoadByCustomerId(req.user.userId);
-        if (!latestLoad) {
-          console.log('No recent load found for customer:', req.user.userId);
-          return res.status(404).json({ message: 'No recent load found' });
-        }
-  
-        const loadLocation = latestLoad ? { lat: latestLoad.pickup_lat, lng: latestLoad.pickup_lng } : null;
-        if (!loadLocation) {
-          console.log('Invalid load location format for customer:', req.user.userId);
-          return res.status(500).json({ message: 'Invalid load location format' });
-        }
-  
-        const h3Index = h3.geoToH3(loadLocation.lat, loadLocation.lng, 9);
-        const nearbyIndices = h3.kRing(h3Index, 2);
-        const availableDrivers = await Driver.findNearbyDrivers(nearbyIndices, latestLoad.service_type);
-        res.json({ nearbyDrivers: availableDrivers, loadLocation });
-        
-      } else if (user.user_type === 'driver') {
-        const driverLocation = await Driver.fetchLocation(req.user.userId);
-        console.log("driverLocation for driver:", driverLocation);
-  
-        if (!driverLocation || !user.vehicleInfo || !user.vehicleInfo.payloadCapacity || !user.vehicleInfo.towingCapacity) {
-          console.log('Missing driver location or vehicle information');
-          return res.status(400).json({ message: 'Missing driver location or vehicle information' });
-        }
-  
-        const h3Index = h3.geoToH3(driverLocation.lat, driverLocation.lng, 9);
-        const nearbyIndices = h3.kRing(h3Index, 2);
-        const loadRequests = await Load.findNearbyLoadRequests(nearbyIndices, user.servicePreference, user.vehicleInfo);
-        res.json({ nearbyLoadRequests: loadRequests, driverLocation });
-    } else {
-        console.log('Access denied for user type:', user.user_type);
-        res.status(403).json({ message: 'Access denied' });
-      }
+      res.json({ service_type: serviceType });
     } catch (error) {
-      console.error('Error in /journey route:', error);
-      res.status(500).json({ error: 'Internal Server Error', details: error.message });
+      console.error('Error in /user/serviceType/:driverId route:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   });
+
+
+});
+
+
+
+
+
+
 module.exports = router;
+
+
+
+
