@@ -12,7 +12,16 @@ function SignUp() {
 
   return (
     <Container maxWidth="sm">
-      <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Box sx={{
+        marginTop: 8, 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center',
+        backgroundColor: '#f5f5f5', 
+        padding: 3, 
+        borderRadius: 2, 
+        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' 
+      }}>
         <Typography variant="h4" component="h2" gutterBottom>
           Sign Up for Hauler
         </Typography>

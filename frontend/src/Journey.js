@@ -17,6 +17,8 @@ const Journey = () => {
     const [driverLocation, setDriverLocation] = useState(null); 
     const [route, setRoute] = useState(null);
     const [bookedDriverId, setBookedDriverId] = useState(null);
+    console.log("Initial States:", { load, nearbyDrivers, nearbyLoads, center, driverLocation, route, bookedDriverId });
+    console.log("User Context:", user);
 
     const fetchJourneyData = async () => {
         try {
@@ -32,7 +34,7 @@ const Journey = () => {
                 setNearbyDrivers(response.data.nearbyDrivers);
                 setCenter([parseFloat(response.data.latestLoad.pickup_lng), parseFloat(response.data.latestLoad.pickup_lat)]);
             } else if (user.user_type === 'driver' && response.data.driverLocation) {
-                setNearbyLoads(response.data.nearbyLoadRequests); 
+                setNearbyLoads(response.data.loadRequests || []); 
                 setDriverLocation(response.data.driverLocation); 
                 setCenter([parseFloat(response.data.driverLocation.lng), parseFloat(response.data.driverLocation.lat)]);
             }
@@ -42,6 +44,7 @@ const Journey = () => {
     };
 
     useEffect(() => {
+        console.log("User updated:", user);
         if (user) {
             fetchJourneyData();
         }
@@ -124,40 +127,48 @@ const onPickupLoad = async (load) => {
 };
 
 
-    useEffect(() => {
-        if (user.user_type === 'driver' && nearbyLoads.length > 0) {
-            setCenter({ lng: parseFloat(nearbyLoads[0].pickup_lng), lat: parseFloat(nearbyLoads[0].pickup_lat) });
-        }
-    }, [nearbyLoads, user.user_type]);
+useEffect(() => {
+    console.log("Nearby Loads updated:", nearbyLoads);
+    if (user.user_type === 'driver' && nearbyLoads.length > 0) {
+        setCenter({ lng: parseFloat(nearbyLoads[0].pickup_lng), lat: parseFloat(nearbyLoads[0].pickup_lat) });
+    }
+}, [nearbyLoads, user.user_type]);
 
-    let mapLocations = [];
-    let componentToShow = null;
-    let userMapLocation = null;
+let mapLocations = [];
+let componentToShow = null;
+let userMapLocation = null;
 
-    if (user.user_type === 'customer' && Array.isArray(nearbyDrivers)) {
-        mapLocations = nearbyDrivers.map(d => ({ lng: parseFloat(d.lng), lat: parseFloat(d.lat) }));
-        componentToShow = <NearbyDrivers
-                              setBookedDriverId={setBookedDriverId}
-                              bookedDriverId={bookedDriverId}
-                              setRoute={setRoute}
-                              onDriverBooked={onDriverBooked}
-                              drivers={nearbyDrivers}
-                              loadLat={parseFloat(load?.pickup_lat)}
-                              loadLng={parseFloat(load?.pickup_lng)}
-                              isSingleDriverBooked={bookedDriverId && nearbyDrivers.length === 1}
-                          />;
-        userMapLocation = load ? { lng: parseFloat(load.pickup_lng), lat: parseFloat(load.pickup_lat) } : null;
-    } else if (user.user_type === 'driver' && Array.isArray(nearbyLoads)) {
-        mapLocations = nearbyLoads.map(l => ({ lng: parseFloat(l.pickup_lng), lat: parseFloat(l.pickup_lat) }));
-        componentToShow = <NearbyLoads loads={nearbyLoads} driverLat={center?.lat} driverLng={center?.lng} onPickupLoad={onPickupLoad} />;
-        userMapLocation = driverLocation;
+if (user.user_type === 'customer' && nearbyDrivers.length > 0) {
+    mapLocations = nearbyDrivers.map(d => ({ lng: parseFloat(d.lng), lat: parseFloat(d.lat) }));
+    componentToShow = <NearbyDrivers
+                          setBookedDriverId={setBookedDriverId}
+                          bookedDriverId={bookedDriverId}
+                          setRoute={setRoute}
+                          onDriverBooked={onDriverBooked}
+                          drivers={nearbyDrivers}
+                          loadLat={parseFloat(load?.pickup_lat)}
+                          loadLng={parseFloat(load?.pickup_lng)}
+                          isSingleDriverBooked={bookedDriverId && nearbyDrivers.length === 1}
+                      />;
+    userMapLocation = load ? { lng: parseFloat(load.pickup_lng), lat: parseFloat(load.pickup_lat) } : null;
+} else if (user.user_type === 'driver') {
+    // Add driver's current location
+    if (driverLocation) {
+        userMapLocation = { lng: parseFloat(driverLocation.lng), lat: parseFloat(driverLocation.lat) };
+        mapLocations.push(userMapLocation);
     }
 
+    if (nearbyLoads && nearbyLoads.length > 0) {
+        mapLocations = [...mapLocations, ...nearbyLoads.map(l => ({ lng: parseFloat(l.pickup_lng), lat: parseFloat(l.pickup_lat) }))];
+        componentToShow = <NearbyLoads loads={nearbyLoads} driverLat={driverLocation?.lat} driverLng={driverLocation?.lng} onPickupLoad={onPickupLoad} />;
+    }
+}
+console.log("Rendering with:", { mapLocations, userMapLocation, center, userType: user.user_type });
     return (
         <Container maxWidth="lg" style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}> 
             <Box sx={{ height: '50%', marginBottom: '1rem' }}>
                 <Map 
-                    key={route && Array.isArray(route.coordinates) ? route.coordinates.map(coord => `${coord.lat},${coord.lng}`).join('|') : 'no-route'}
+                    key={route?.coordinates ? route.coordinates.map(coord => `${coord.lat},${coord.lng}`).join('|') : 'no-route'}
                     locations={mapLocations}
                     userLocation={userMapLocation}
                     center={center}
@@ -174,6 +185,4 @@ const onPickupLoad = async (load) => {
 };
 
 export default Journey;
-
-
 

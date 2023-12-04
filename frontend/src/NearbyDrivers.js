@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getRouteData } from './api/mapboxApi';
 import { Card, CardContent, Typography, Grid, Button } from '@mui/material';
+import './NearbyDrivers.css';
 
 const isValidCoordinate = (lat, lng) => {
     return lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
@@ -31,11 +32,12 @@ const NearbyDrivers = ({ drivers, loadLat, loadLng, onDriverBooked, bookedDriver
         });
     }, [drivers, loadLat, loadLng]);
 
+    
     return (
-<Grid container spacing={2} style={{ height: '100%', overflowY: 'auto' }}>
+        <Grid container spacing={2} className={bookedDriverId ? 'gridContainerBooked' : 'gridContainer'}>
             {drivers.filter(driver => !bookedDriverId || driver.driver_id === bookedDriverId).map(driver => (
-                <Grid item key={driver.driver_id} xs={12} sm={6} md={4} lg={3}>
-                    <Card style={{ width: '100%' }}>
+                <Grid item key={driver.driver_id} xs={12}>
+                    <Card className={bookedDriverId ? 'cardBooked' : 'card'}>
                         <CardContent>
                             <Typography variant="h6">Driver: {driver.first_name} {driver.last_name}</Typography>
                             <Typography>Vehicle: {driver.vehicle_make} {driver.vehicle_model}</Typography>
@@ -55,7 +57,6 @@ const NearbyDrivers = ({ drivers, loadLat, loadLng, onDriverBooked, bookedDriver
             ))}
         </Grid>
     );
-};
+            }    
 
 export default NearbyDrivers;
-

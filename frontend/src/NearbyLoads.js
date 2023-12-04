@@ -7,6 +7,7 @@ const isValidCoordinate = (lat, lng) => {
 };
 
 const NearbyLoads = ({ loads, driverLat, driverLng, onPickupLoad }) => {
+    console.log("NearbyLoads component rendered with loads:", loads);
     const [selectedLoadId, setSelectedLoadId] = useState(null);
     const [loadDistances, setLoadDistances] = useState({});
 

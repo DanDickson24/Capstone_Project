@@ -30,6 +30,7 @@ const Map = ({ locations, userLocation, center, userType, route, bookedDriverId 
         }
 
         locations.forEach(location => {
+            console.log("Adding marker for location:", location);
             const el = document.createElement('div');
             el.className = 'marker';
             const icon = userType === 'driver' ? 'loadicon.png' : 'caricon.png';
@@ -57,6 +58,7 @@ const Map = ({ locations, userLocation, center, userType, route, bookedDriverId 
             }
         };
     }, [center, locations, userType, userLocation]);
+
 
     useEffect(() => {
         console.log('Updating route and moving driver marker');

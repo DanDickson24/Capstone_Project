@@ -73,7 +73,13 @@ function LoadForm() {
   };
   return (
     <Container maxWidth="lg">
-      <Box sx={{ mt: 4 }}>
+      <Box sx={{
+        mt: 4,
+        backgroundColor: '#f5f5f5',
+        padding: 3, 
+        borderRadius: 2,
+        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' 
+      }}>
         <Typography variant="h4" component="h1" gutterBottom>
           Load Details
         </Typography>
@@ -118,9 +124,16 @@ function LoadForm() {
               <TextField name="dropoffZip" label="Drop-off Zip Code" variant="outlined" fullWidth margin="normal" onChange={handleLocationChange} color="secondary" />
             </Grid>
           </Grid>
-          <Button type="submit" variant="contained" color="secondary" fullWidth sx={{ mt: 3, mb: 2 }}>
-            Haul my stuff!
-          </Button>
+          <Grid item xs={12} md={4} sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Button 
+                type="submit" 
+                variant="contained" 
+                color="secondary" 
+                sx={{ mt: 3, mb: 2, width: '100%', maxWidth: '300px' }} // Adjusted width
+              >
+                Haul my stuff!
+              </Button>
+            </Grid>
         </form>
       </Box>
     </Container>

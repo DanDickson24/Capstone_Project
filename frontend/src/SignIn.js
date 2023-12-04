@@ -26,7 +26,16 @@ function SignIn() {
 
   return (
     <Container maxWidth="sm">
-      <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Box sx={{
+        marginTop: 8, 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        backgroundColor: '#f5f5f5', 
+        padding: 3, 
+        borderRadius: 2, 
+        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' 
+      }}>
         <Typography component="h1" variant="h5" color="textSecondary">
           Sign In to Hauler
         </Typography>
