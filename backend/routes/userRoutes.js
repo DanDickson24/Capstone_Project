@@ -9,10 +9,12 @@ const { verifyToken } = require('../middleware/auth');
 const Vehicle = require('../models/Vehicle');
 const router = express.Router();
 
+// Route to display the signup form.
 router.get('/signup', (req, res) => {
     res.json({ message: 'Signup form' });
 });
 
+// Route to handle user signup.
 router.post('/signup', async (req, res) => {
     try {
         console.log(req.body); 
@@ -30,6 +32,7 @@ router.post('/signup', async (req, res) => {
     }
 });
 
+// Route to handle user login.
 router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -64,6 +67,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// Route to display home page based on user type.
 router.get('/home', verifyToken, (req, res) => {
     if (req.user.user_type === 'driver') {
         res.json({ message: 'Driver home page' });
@@ -72,7 +76,27 @@ router.get('/home', verifyToken, (req, res) => {
     }
 });
 
+// Route to fetch the past journeys of a user.
+router.get('/pastjourneys', verifyToken, async (req, res) => {
+  try {
+    console.log(`Received /pastjourneys request from user ${req.user.user_id}`);
+    const userId = req.user.user_id;
+    const userType = req.user.user_type;
 
+    const journeys = await User.getPastJourneys(userId, userType);
+    
+    if (journeys.length === 0) {
+      return res.status(404).json({ message: 'No past journeys found' });
+    }
+
+    res.json(journeys);
+  } catch (error) {
+    console.error('Error in /pastjourneys route:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Route to create a new load request.
 router.post('/load', verifyToken, async (req, res) => {
   try {
     console.log('Received load request body:', req.body); 
@@ -91,24 +115,26 @@ router.post('/load', verifyToken, async (req, res) => {
   }
 });
 
-  router.post('/updateDriverLocation', verifyToken, async (req, res) => {
-    try {
-        console.log('Update Driver Location Request Received:', req.body);
+// Route to update a driver's current location.
+router.post('/updateDriverLocation', verifyToken, async (req, res) => {
+  try {
+  console.log('Update Driver Location Request Received:', req.body);
 
-        const { driverId, newLocation } = req.body;
-        if (!driverId || !newLocation || typeof newLocation.lat !== 'number' || typeof newLocation.lng !== 'number') {
-            console.log('Invalid request body:', req.body);
-            return res.status(400).json({ error: 'Invalid request data' });
-        }
+    const { driverId, newLocation } = req.body;
+    if (!driverId || !newLocation || typeof newLocation.lat !== 'number' || typeof newLocation.lng !== 'number') {
+    console.log('Invalid request body:', req.body);
+    return res.status(400).json({ error: 'Invalid request data' });
+    }
 
-        await Driver.updateCurrentLocation(driverId, newLocation);
-        res.status(200).json({ message: 'Driver location updated successfully' });
+    await Driver.updateCurrentLocation(driverId, newLocation);
+    res.status(200).json({ message: 'Driver location updated successfully' });
     } catch (error) {
-        console.error('Error in /user/updateDriverLocation route:', error);
-        res.status(500).json({ error: 'Internal Server Error', details: error.message });
+    console.error('Error in /user/updateDriverLocation route:', error);
+     res.status(500).json({ error: 'Internal Server Error', details: error.message });
     }
 });
 
+// Route to fetch journey data for a user.
 router.get('/journey', verifyToken, async (req, res) => {
   try {
     const journeyData = await User.getJourneyData(req.user.userId);
@@ -119,6 +145,7 @@ router.get('/journey', verifyToken, async (req, res) => {
   }
 });
 
+// Route to edit vehicle information for a driver.
 router.post('/editvehicle/:driverId', verifyToken, async (req, res) => {
   try {
     const driverId = req.params.driverId;
@@ -133,6 +160,7 @@ router.post('/editvehicle/:driverId', verifyToken, async (req, res) => {
   }
 });
 
+// Route to get vehicle information for a driver.
 router.get('/vehicles/:driverId', verifyToken, async (req, res) => {
   try {
     const driverId = req.params.driverId;
@@ -148,6 +176,7 @@ router.get('/vehicles/:driverId', verifyToken, async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 
+// Route to get the service type of a driver.
   router.get('/serviceType/:driverId', verifyToken, async (req, res) => {
     console.log("Driver ID:", req.params.driverId);
     try {

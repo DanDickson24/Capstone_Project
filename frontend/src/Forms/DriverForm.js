@@ -1,10 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { fetchVehicleMakes, fetchVehicleModels } from '../api/nhtsaApi';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../AuthContext';
 import { TextField, Button, Select, MenuItem, InputLabel, FormControl, Slider, Typography, Box, Container } from '@mui/material';
-
 
 
 export function DriverSignUpForm() {
@@ -36,7 +34,6 @@ export function DriverSignUpForm() {
   useEffect(() => {
     const loadVehicleMakes = async () => {
         const makes = await fetchVehicleMakes();
-        console.log('Loaded Vehicle Makes: ', makes);
         setVehicleMakes(makes);
     };
     loadVehicleMakes();
@@ -46,7 +43,6 @@ useEffect(() => {
   const loadVehicleModels = async () => {
       if (formData.vehicleMake) {
           const models = await fetchVehicleModels(formData.vehicleMake);
-          console.log('Loaded Vehicle Models: ', models);
           setVehicleModels(models);
       } else {
           setVehicleModels([]);
@@ -73,7 +69,7 @@ const handleChange = (e) => {
       const signUpResponse = await axios.post('http://localhost:3000/user/signup', driverData);
   
       if (signUpResponse.status === 201) {
-        console.log('Sign-up successful:', signUpResponse.data);
+
         
         navigate('/signin');
       } else {

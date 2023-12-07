@@ -24,7 +24,6 @@ const DriverLocationForm = () => {
         e.preventDefault();
         if (locationData.address && locationData.city && locationData.state && locationData.zip) {
             const fullAddress = `${locationData.address}, ${locationData.city}, ${locationData.state}, ${locationData.zip}`;
-            console.log(`Fetching coordinates for address: ${fullAddress}`);
             const coordinates = await getCoordinatesFromAddress(fullAddress);
             if (coordinates) {
                 console.log(`Coordinates received:`, coordinates);
@@ -36,12 +35,10 @@ const DriverLocationForm = () => {
     const updateDriverLocation = async (coordinates) => {
         const token = localStorage.getItem('token');
         try {
-            console.log(`Sending update location request for driverId ${user.user_id} with coordinates:`, coordinates);
             await axios.post('http://localhost:3000/user/updateDriverLocation', {
                 driverId: user.user_id,
                 newLocation: { lat: coordinates[1], lng: coordinates[0] }
             }, { headers: { Authorization: `Bearer ${token}` } });
-            console.log(`Location updated for driverId ${user.user_id}, navigating to /journey`);
             navigate('/journey');
         } catch (error) {
             console.error('Error updating driver location:', error);

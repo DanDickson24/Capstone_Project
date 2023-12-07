@@ -33,12 +33,15 @@ function Home() {
         borderRadius: 2, 
         boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)'
       }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Home Page
+      <Typography variant="h4" component="h1" gutterBottom>
+        Welcome to Hauler!
+      </Typography>
+      <Typography variant="h6" component="h3" gutterBottom> 
+          What would you like to do?
         </Typography>
         {user && (
           <>
-            <Button variant="contained" color="secondary" onClick={handleButtonClick}>
+            <Button variant="contained" color="secondary" onClick={handleButtonClick} sx={{ mt: 2 }}>
               {user.user_type === 'customer' ? 'Create New Load To Haul' : 'Find Customers'}
             </Button>
             {user.user_type === 'driver' && (
@@ -46,6 +49,14 @@ function Home() {
                 Edit Vehicle Info
               </Button>
             )}
+            <Button
+              variant="contained"
+              color="secondary" 
+              onClick={() => navigate('/pastjourneys')}
+              sx={{ mt: 2 }} 
+            >
+              View Past Journeys
+            </Button>
           </>
         )}
       </Box>

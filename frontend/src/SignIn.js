@@ -36,7 +36,7 @@ function SignIn() {
         borderRadius: 2, 
         boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' 
       }}>
-        <Typography component="h1" variant="h5" color="textSecondary">
+       <Typography component="h1" variant="h6"> 
           Sign In to Hauler
         </Typography>
         <Box component="form" onSubmit={handleSignIn} sx={{ mt: 3 }}>

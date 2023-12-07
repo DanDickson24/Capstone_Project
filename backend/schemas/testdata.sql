@@ -1,130 +1,4 @@
--- Vehicle for driver with user_id 117 (Alex Thompson)
-INSERT INTO vehicles (driver_id, vehicle_year, vehicle_make, vehicle_model, vehicle_trim, vehicle_payload_capacity, vehicle_towing_capacity, user_set_payload_capacity, user_set_towing_capacity) 
-VALUES (117, 2020, 'Ford', 'F-150', 'XLT', 2000, 5000, 1800, 4500);
-
--- Vehicle for driver with user_id 118 (Brian White)
-INSERT INTO vehicles (driver_id, vehicle_year, vehicle_make, vehicle_model, vehicle_trim, vehicle_payload_capacity, vehicle_towing_capacity, user_set_payload_capacity, user_set_towing_capacity) 
-VALUES (118, 2019, 'Chevrolet', 'Silverado', 'LT', 2100, 7000, 1900, 6500);
-
--- Vehicle for driver with user_id 119 (Carla Garcia)
-INSERT INTO vehicles (driver_id, vehicle_year, vehicle_make, vehicle_model, vehicle_trim, vehicle_payload_capacity, vehicle_towing_capacity, user_set_payload_capacity, user_set_towing_capacity) 
-VALUES (119, 2021, 'Ram', '1500', 'Laramie', 2300, 8000, 2200, 7500);
-
--- Vehicle for driver with user_id 120 (David Miller)
-INSERT INTO vehicles (driver_id, vehicle_year, vehicle_make, vehicle_model, vehicle_trim, vehicle_payload_capacity, vehicle_towing_capacity, user_set_payload_capacity, user_set_towing_capacity) 
-VALUES (120, 2018, 'Toyota', 'Tundra', 'SR5', 2000, 7300, 1900, 7000);
-
--- Vehicle for driver with user_id 121 (Eva Davis)
-INSERT INTO vehicles (driver_id, vehicle_year, vehicle_make, vehicle_model, vehicle_trim, vehicle_payload_capacity, vehicle_towing_capacity, user_set_payload_capacity, user_set_towing_capacity) 
-VALUES (121, 2017, 'GMC', 'Sierra', 'SLT', 2200, 7600, 2100, 7200);
-
--- Vehicle for driver with user_id 122 (Frank Lopez)
-INSERT INTO vehicles (driver_id, vehicle_year, vehicle_make, vehicle_model, vehicle_trim, vehicle_payload_capacity, vehicle_towing_capacity, user_set_payload_capacity, user_set_towing_capacity) 
-VALUES (122, 2022, 'Nissan', 'Titan', 'Platinum Reserve', 2000, 9300, 1800, 8800);
-
--- Vehicle for driver with user_id 123 (Grace Hernandez)
-INSERT INTO vehicles (driver_id, vehicle_year, vehicle_make, vehicle_model, vehicle_trim, vehicle_payload_capacity, vehicle_towing_capacity, user_set_payload_capacity, user_set_towing_capacity) 
-VALUES (123, 2020, 'Honda', 'Ridgeline', 'RTL-E', 1584, 5000, 1500, 4800);
-
--- Vehicle for driver with user_id 124 (Henry Martinez)
-INSERT INTO vehicles (driver_id, vehicle_year, vehicle_make, vehicle_model, vehicle_trim, vehicle_payload_capacity, vehicle_towing_capacity, user_set_payload_capacity, user_set_towing_capacity) 
-VALUES (124, 2021, 'Jeep', 'Gladiator', 'Mojave', 1700, 7650, 1600, 7400);
-
--- Vehicle for driver with user_id 125 (Ivy Wilson)
-INSERT INTO vehicles (driver_id, vehicle_year, vehicle_make, vehicle_model, vehicle_trim, vehicle_payload_capacity, vehicle_towing_capacity, user_set_payload_capacity, user_set_towing_capacity) 
-VALUES (125, 2019, 'Dodge', 'Ram 2500', 'Laramie Longhorn', 3100, 14000, 3000, 13500);
-
--- Vehicle for driver with user_id 126 (Jack Anderson)
-INSERT INTO vehicles (driver_id, vehicle_year, vehicle_make, vehicle_model, vehicle_trim, vehicle_payload_capacity, vehicle_towing_capacity, user_set_payload_capacity, user_set_towing_capacity) 
-VALUES (126, 2018, 'Chevrolet', 'Colorado', 'Z71', 1570, 7700, 1500, 7500);
-
--- Vehicle for driver with user_id 127 (Kara Thomas)
-INSERT INTO vehicles (driver_id, vehicle_year, vehicle_make, vehicle_model, vehicle_trim, vehicle_payload_capacity, vehicle_towing_capacity, user_set_payload_capacity, user_set_towing_capacity) 
-VALUES (127, 2022, 'Ford', 'Ranger', 'Lariat', 1860, 7500, 1800, 7300);
-
--- Vehicle for driver with user_id 128 (Liam Jackson)
-INSERT INTO vehicles (driver_id, vehicle_year, vehicle_make, vehicle_model, vehicle_trim, vehicle_payload_capacity, vehicle_towing_capacity, user_set_payload_capacity, user_set_towing_capacity) 
-VALUES (128, 2017, 'Toyota', 'Tacoma', 'TRD Off-Road', 1620, 6800, 1500, 6500);
-
--- Vehicle for driver with user_id 129 (Mona Harris)
-INSERT INTO vehicles (driver_id, vehicle_year, vehicle_make, vehicle_model, vehicle_trim, vehicle_payload_capacity, vehicle_towing_capacity, user_set_payload_capacity, user_set_towing_capacity) 
-VALUES (129, 2020, 'GMC', 'Canyon', 'Denali', 1600, 7700, 1550, 7400);
-
--- Vehicle for driver with user_id 130 (Nate Clark)
-INSERT INTO vehicles (driver_id, vehicle_year, vehicle_make, vehicle_model, vehicle_trim, vehicle_payload_capacity, vehicle_towing_capacity, user_set_payload_capacity, user_set_towing_capacity) 
-VALUES (130, 2021, 'Nissan', 'Frontier', 'Pro-4X', 1460, 6720, 1400, 6500);
-
--- Vehicle for driver with user_id 131 (Olivia Lewis)
-INSERT INTO vehicles (driver_id, vehicle_year, vehicle_make, vehicle_model, vehicle_trim, vehicle_payload_capacity, vehicle_towing_capacity, user_set_payload_capacity, user_set_towing_capacity) 
-VALUES (131, 2019, 'Jeep', 'Gladiator', 'Rubicon', 1600, 7000, 1550, 6800);
-
--- Vehicle for driver with user_id 132 (Pete Robinson)
-INSERT INTO vehicles (driver_id, vehicle_year, vehicle_make, vehicle_model, vehicle_trim, vehicle_payload_capacity, vehicle_towing_capacity, user_set_payload_capacity, user_set_towing_capacity) 
-VALUES (132, 2018, 'Ford', 'F-250', 'XLT', 3500, 15000, 3400, 14500);
-
--- Vehicle for driver with user_id 133 (Quinn Walker)
-INSERT INTO vehicles (driver_id, vehicle_year, vehicle_make, vehicle_model, vehicle_trim, vehicle_payload_capacity, vehicle_towing_capacity, user_set_payload_capacity, user_set_towing_capacity) 
-VALUES (133, 2022, 'Chevrolet', 'Silverado 3500HD', 'High Country', 4180, 36000, 4000, 35000);
-
--- Vehicle for driver with user_id 134 (Rita Perez)
-INSERT INTO vehicles (driver_id, vehicle_year, vehicle_make, vehicle_model, vehicle_trim, vehicle_payload_capacity, vehicle_towing_capacity, user_set_payload_capacity, user_set_towing_capacity) 
-VALUES (134, 2021, 'Ram', '3500', 'Limited', 4030, 35300, 3900, 34000);
-
--- Vehicle for driver with user_id 135 (Sam Moore)
-INSERT INTO vehicles (driver_id, vehicle_year, vehicle_make, vehicle_model, vehicle_trim, vehicle_payload_capacity, vehicle_towing_capacity, user_set_payload_capacity, user_set_towing_capacity) 
-VALUES (135, 2017, 'GMC', 'Sierra 2500HD', 'Denali', 2810, 13000, 2700, 12500);
-
--- Vehicle for driver with user_id 136 (Tina Taylor)
-INSERT INTO vehicles (driver_id, vehicle_year, vehicle_make, vehicle_model, vehicle_trim, vehicle_payload_capacity, vehicle_towing_capacity, user_set_payload_capacity, user_set_towing_capacity) 
-VALUES (136, 2018, 'Toyota', 'Tundra', '1794 Edition', 1730, 10200, 1650, 9800);
-
-
-
--- Load for customer John Doe (user_id 137)
-INSERT INTO loads (customer_id, description, load_size, load_weight, need_hauling, need_towing, service_type, pickup_location, dropoff_location, h3_index, grid_cell_id, status) VALUES
-(137, 'Furniture for new home', 'Medium', 1800, true, false, 'hauling', ST_SetSRID(ST_MakePoint(-82.4584, 27.9506), 4326), ST_SetSRID(ST_MakePoint(-81.3792, 28.5383), 4326), '89441a1340bffff', '89441a1340bffff', 'pending');
-
--- Load for customer Jane Smith (user_id 138)
-INSERT INTO loads (customer_id, description, load_size, load_weight, need_hauling, need_towing, service_type, pickup_location, dropoff_location, h3_index, grid_cell_id, status) VALUES
-(138, 'Home appliances', 'Small', 1200, true, false, 'hauling', ST_SetSRID(ST_MakePoint(-118.2437, 34.0522), 4326), ST_SetSRID(ST_MakePoint(-121.4944, 38.5816), 4326), '89441a13457ffff', '89441a13457ffff', 'pending');
-
--- Load for customer Emily Jones (user_id 139)
-INSERT INTO loads (customer_id, description, load_size, load_weight, need_hauling, need_towing, service_type, pickup_location, dropoff_location, h3_index, grid_cell_id, status) VALUES
-(139, 'Office equipment', 'Medium', 2000, true, true, 'hauling_and_towing', ST_SetSRID(ST_MakePoint(-96.7970, 32.7767), 4326), ST_SetSRID(ST_MakePoint(-97.3308, 32.7555), 4326), '89441a13447ffff', '89441a13447ffff', 'pending');
-
--- Load for customer Michael Brown (user_id 140)
-INSERT INTO loads (customer_id, description, load_size, load_weight, need_hauling, need_towing, service_type, pickup_location, dropoff_location, h3_index, grid_cell_id, status) VALUES
-(140, 'Garden tools and supplies', 'Small', 700, true, false, 'hauling', ST_SetSRID(ST_MakePoint(-73.9352, 40.7306), 4326), ST_SetSRID(ST_MakePoint(-74.0060, 40.7128), 4326), '89441a13473ffff', '89441a13473ffff', 'pending');
-
--- Load for customer Sarah Johnson (user_id 141)
-INSERT INTO loads (customer_id, description, load_size, load_weight, need_hauling, need_towing, service_type, pickup_location, dropoff_location, h3_index, grid_cell_id, status) VALUES
-(141, 'Building materials', 'Large', 2500, true, true, 'hauling_and_towing', ST_SetSRID(ST_MakePoint(-87.6298, 41.8781), 4326), ST_SetSRID(ST_MakePoint(-88.2434, 40.1164), 4326), '89441a1340fffff', '89441a1340fffff', 'pending');
-
--- Load for customer Chris Davis (user_id 142)
-INSERT INTO loads (customer_id, description, load_size, load_weight, need_hauling, need_towing, service_type, pickup_location, dropoff_location, h3_index, grid_cell_id, status) VALUES
-(142, 'Electronic goods for sale', 'Medium', 1500, false, true, 'towing', ST_SetSRID(ST_MakePoint(-122.3321, 47.6062), 4326), ST_SetSRID(ST_MakePoint(-122.4194, 37.7749), 4326), '89441a13403ffff', '89441a13403ffff', 'pending');
-
--- Load for customer Ashley Wilson (user_id 143)
-INSERT INTO loads (customer_id, description, load_size, load_weight, need_hauling, need_towing, service_type, pickup_location, dropoff_location, h3_index, grid_cell_id, status) VALUES
-(143, 'Sports equipment', 'Small', 800, true, false, 'hauling', ST_SetSRID(ST_MakePoint(-104.9903, 39.7392), 4326), ST_SetSRID(ST_MakePoint(-105.7821, 39.5501), 4326), '89441a1341bffff', '89441a1341bffff', 'pending');
-
--- Load for customer Justin Martinez (user_id 144)
-INSERT INTO loads (customer_id, description, load_size, load_weight, need_hauling, need_towing, service_type, pickup_location, dropoff_location, h3_index, grid_cell_id, status) VALUES
-(144, 'Music band instruments', 'Medium', 1100, true, false, 'hauling', ST_SetSRID(ST_MakePoint(-83.0458, 42.3314), 4326), ST_SetSRID(ST_MakePoint(-84.5555, 42.7325), 4326), '89441a134cfffff', '89441a134cfffff', 'pending');
-
--- Load for customer Olivia Anderson (user_id 145)
-INSERT INTO loads (customer_id, description, load_size, load_weight, need_hauling, need_towing, service_type, pickup_location, dropoff_location, h3_index, grid_cell_id, status) VALUES
-(145, 'Retail store merchandise', 'Large', 2200, true, true, 'hauling_and_towing', ST_SetSRID(ST_MakePoint(-87.6298, 41.8781), 4326), ST_SetSRID(ST_MakePoint(-89.4012, 43.0731), 4326), '89441a13453ffff', '89441a13453ffff', 'pending');
-
--- Load for customer Ethan Taylor (user_id 146)
-INSERT INTO loads (customer_id, description, load_size, load_weight, need_hauling, need_towing, service_type, pickup_location, dropoff_location, h3_index, grid_cell_id, status) VALUES
-(146, 'Artwork for exhibition', 'Small', 600, true, false, 'hauling', ST_SetSRID(ST_MakePoint(-122.4194, 37.7749), 4326), ST_SetSRID(ST_MakePoint(-118.2437, 34.0522), 4326), '89441a13443ffff', '89441a13443ffff', 'pending');
-
-
-
-
-
--- Drivers (Complete list of 20)
+-- Test Drivers
 INSERT INTO users (user_type, first_name, last_name, username, hashed_password, email, phone_number, address, city, state, zip_code) VALUES 
 ('driver', 'Alex', 'Thompson', 'alex.thompson01', 'hashed_password', 'alex.thompson01@example.com', '987-654-3210', '1234 Main St', 'Anytown', 'CA', '12345'),
 ('driver', 'Brian', 'White', 'brian.white02', 'hashed_password', 'brian.white02@example.com', '876-543-2109', '2345 Oak St', 'Springfield', 'TX', '23456'),
@@ -149,7 +23,7 @@ INSERT INTO users (user_type, first_name, last_name, username, hashed_password, 
 
 
 
--- Customers (Complete list of 20)
+-- Test Customers
 INSERT INTO users (user_type, first_name, last_name, username, hashed_password, email, phone_number, address, city, state, zip_code) VALUES 
 ('customer', 'John', 'Doe', 'john.doe01', 'hashed_password', 'john.doe01@example.com', '123-456-7890', '1234 Main St', 'Anytown', 'CA', '12345'),
 ('customer', 'Jane', 'Smith', 'jane.smith02', 'hashed_password', 'jane.smith02@example.com', '234-567-8901', '2345 Oak St', 'Springfield', 'TX', '23456'),
@@ -171,5 +45,83 @@ INSERT INTO users (user_type, first_name, last_name, username, hashed_password, 
 ('customer', 'Mason', 'Lewis', 'mason.lewis18', 'hashed_password', 'mason.lewis18@example.com', '890-123-4568', '1819 Cedar Ave', 'Paradise', 'NM', '18901'),
 ('customer', 'Lily', 'Walker', 'lily.walker19', 'hashed_password', 'lily.walker19@example.com', '901-234-5679', '1920 Spruce Blvd', 'Heaven', 'ND', '19012'),
 ('customer', 'Jacob', 'Young', 'jacob.young20', 'hashed_password', 'jacob.young20@example.com', '012-345-6780', '2021 Birch Ln', 'Arcadia', 'VT', '20123');
+
+
+-- Test vehicles
+INSERT INTO vehicles (driver_id, vehicle_year, vehicle_make, vehicle_model, vehicle_trim, vehicle_payload_capacity, vehicle_towing_capacity, user_set_payload_capacity, user_set_towing_capacity) 
+VALUES (117, 2020, 'Ford', 'F-150', 'XLT', 2000, 5000, 1800, 4500);
+(118, 2019, 'Chevrolet', 'Silverado', 'LT', 2100, 7000, 1900, 6500);
+(119, 2021, 'Ram', '1500', 'Laramie', 2300, 8000, 2200, 7500);
+(120, 2018, 'Toyota', 'Tundra', 'SR5', 2000, 7300, 1900, 7000);
+(121, 2017, 'GMC', 'Sierra', 'SLT', 2200, 7600, 2100, 7200);
+(122, 2022, 'Nissan', 'Titan', 'Platinum Reserve', 2000, 9300, 1800, 8800);
+(123, 2020, 'Honda', 'Ridgeline', 'RTL-E', 1584, 5000, 1500, 4800);
+(124, 2021, 'Jeep', 'Gladiator', 'Mojave', 1700, 7650, 1600, 7400);
+(125, 2019, 'Dodge', 'Ram 2500', 'Laramie Longhorn', 3100, 14000, 3000, 13500);
+(126, 2018, 'Chevrolet', 'Colorado', 'Z71', 1570, 7700, 1500, 7500);
+(127, 2022, 'Ford', 'Ranger', 'Lariat', 1860, 7500, 1800, 7300);
+(128, 2017, 'Toyota', 'Tacoma', 'TRD Off-Road', 1620, 6800, 1500, 6500);
+(129, 2020, 'GMC', 'Canyon', 'Denali', 1600, 7700, 1550, 7400);
+(130, 2021, 'Nissan', 'Frontier', 'Pro-4X', 1460, 6720, 1400, 6500);
+(131, 2019, 'Jeep', 'Gladiator', 'Rubicon', 1600, 7000, 1550, 6800);
+(132, 2018, 'Ford', 'F-250', 'XLT', 3500, 15000, 3400, 14500);
+(133, 2022, 'Chevrolet', 'Silverado 3500HD', 'High Country', 4180, 36000, 4000, 35000);
+(134, 2021, 'Ram', '3500', 'Limited', 4030, 35300, 3900, 34000);
+(135, 2017, 'GMC', 'Sierra 2500HD', 'Denali', 2810, 13000, 2700, 12500);
+(136, 2018, 'Toyota', 'Tundra', '1794 Edition', 1730, 10200, 1650, 9800);
+
+
+
+-- Test pending loads
+INSERT INTO loads (customer_id, description, load_size, load_weight, need_hauling, need_towing, service_type, pickup_location, dropoff_location, h3_index, grid_cell_id, status) VALUES
+(137, 'Furniture for new home', 'Medium', 1800, true, false, 'hauling', ST_SetSRID(ST_MakePoint(-82.4584, 27.9506), 4326), ST_SetSRID(ST_MakePoint(-81.3792, 28.5383), 4326), '89441a1340bffff', '89441a1340bffff', 'pending');
+(138, 'Home appliances', 'Small', 1200, true, false, 'hauling', ST_SetSRID(ST_MakePoint(-118.2437, 34.0522), 4326), ST_SetSRID(ST_MakePoint(-121.4944, 38.5816), 4326), '89441a13457ffff', '89441a13457ffff', 'pending');
+(139, 'Office equipment', 'Medium', 2000, true, true, 'hauling_and_towing', ST_SetSRID(ST_MakePoint(-96.7970, 32.7767), 4326), ST_SetSRID(ST_MakePoint(-97.3308, 32.7555), 4326), '89441a13447ffff', '89441a13447ffff', 'pending');
+(140, 'Garden tools and supplies', 'Small', 700, true, false, 'hauling', ST_SetSRID(ST_MakePoint(-73.9352, 40.7306), 4326), ST_SetSRID(ST_MakePoint(-74.0060, 40.7128), 4326), '89441a13473ffff', '89441a13473ffff', 'pending');
+(141, 'Building materials', 'Large', 2500, true, true, 'hauling_and_towing', ST_SetSRID(ST_MakePoint(-87.6298, 41.8781), 4326), ST_SetSRID(ST_MakePoint(-88.2434, 40.1164), 4326), '89441a1340fffff', '89441a1340fffff', 'pending');
+(142, 'Electronic goods for sale', 'Medium', 1500, false, true, 'towing', ST_SetSRID(ST_MakePoint(-122.3321, 47.6062), 4326), ST_SetSRID(ST_MakePoint(-122.4194, 37.7749), 4326), '89441a13403ffff', '89441a13403ffff', 'pending');
+(143, 'Sports equipment', 'Small', 800, true, false, 'hauling', ST_SetSRID(ST_MakePoint(-104.9903, 39.7392), 4326), ST_SetSRID(ST_MakePoint(-105.7821, 39.5501), 4326), '89441a1341bffff', '89441a1341bffff', 'pending');
+(144, 'Music band instruments', 'Medium', 1100, true, false, 'hauling', ST_SetSRID(ST_MakePoint(-83.0458, 42.3314), 4326), ST_SetSRID(ST_MakePoint(-84.5555, 42.7325), 4326), '89441a134cfffff', '89441a134cfffff', 'pending');
+(145, 'Retail store merchandise', 'Large', 2200, true, true, 'hauling_and_towing', ST_SetSRID(ST_MakePoint(-87.6298, 41.8781), 4326), ST_SetSRID(ST_MakePoint(-89.4012, 43.0731), 4326), '89441a13453ffff', '89441a13453ffff', 'pending');
+(146, 'Artwork for exhibition', 'Small', 600, true, false, 'hauling', ST_SetSRID(ST_MakePoint(-122.4194, 37.7749), 4326), ST_SetSRID(ST_MakePoint(-118.2437, 34.0522), 4326), '89441a13443ffff', '89441a13443ffff', 'pending');
+
+
+
+-- Completed loads - review info
+INSERT INTO loads (customer_id, description, load_size, load_weight, need_hauling, need_towing, service_type, pickup_location, dropoff_location, h3_index, grid_cell_id, status) VALUES
+(137, 'Furniture - Load 1', 'Medium', 1500, true, false, 'hauling', ST_SetSRID(ST_MakePoint(-82.4584, 27.9506), 4326), ST_SetSRID(ST_MakePoint(-81.3792, 28.5383), 4326), '89441a1340bffff', '89441a1340bffff', 'completed'),
+(138, 'Appliances - Load 2', 'Medium', 1200, true, false, 'hauling', ST_SetSRID(ST_MakePoint(-118.2437, 34.0522), 4326), ST_SetSRID(ST_MakePoint(-121.4944, 38.5816), 4326), '89441a13457ffff', '89441a13457ffff', 'completed'),
+(139, 'Office Supplies - Load 3', 'Medium', 1300, true, false, 'hauling', ST_SetSRID(ST_MakePoint(-96.7970, 32.7767), 4326), ST_SetSRID(ST_MakePoint(-97.3308, 32.7555), 4326), '89441a13447ffff', '89441a13447ffff', 'completed'),
+(140, 'Garden Equipment - Load 4', 'Medium', 1100, true, false, 'hauling', ST_SetSRID(ST_MakePoint(-73.9352, 40.7306), 4326), ST_SetSRID(ST_MakePoint(-74.0060, 40.7128), 4326), '89441a13473ffff', '89441a13473ffff', 'completed'),
+(141, 'Building Materials - Load 5', 'Large', 2000, true, true, 'hauling_and_towing', ST_SetSRID(ST_MakePoint(-87.6298, 41.8781), 4326), ST_SetSRID(ST_MakePoint(-88.2434, 40.1164), 4326), '89441a1340fffff', '89441a1340fffff', 'completed'),
+(142, 'Electronic Goods - Load 6', 'Medium', 1000, false, true, 'towing', ST_SetSRID(ST_MakePoint(-122.3321, 47.6062), 4326), ST_SetSRID(ST_MakePoint(-122.4194, 37.7749), 4326), '89441a13403ffff', '89441a13403ffff', 'completed'),
+(143, 'Sports Equipment - Load 7', 'Small', 800, true, false, 'hauling', ST_SetSRID(ST_MakePoint(-104.9903, 39.7392), 4326), ST_SetSRID(ST_MakePoint(-105.7821, 39.5501), 4326), '89441a1341bffff', '89441a1341bffff', 'completed'),
+(144, 'Musical Instruments - Load 8', 'Medium', 900, true, false, 'hauling', ST_SetSRID(ST_MakePoint(-83.0458, 42.3314), 4326), ST_SetSRID(ST_MakePoint(-84.5555, 42.7325), 4326), '89441a134cfffff', '89441a134cfffff', 'completed'),
+(145, 'Retail Merchandise - Load 9', 'Large', 1800, true, true, 'hauling_and_towing', ST_SetSRID(ST_MakePoint(-87.6298, 41.8781), 4326), ST_SetSRID(ST_MakePoint(-89.4012, 43.0731), 4326), '89441a13453ffff', '89441a13453ffff', 'completed'),
+(146, 'Artwork - Load 10', 'Small', 500, true, false, 'hauling', ST_SetSRID(ST_MakePoint(-122.4194, 37.7749), 4326), ST_SetSRID(ST_MakePoint(-118.2437, 34.0522), 4326), '89441a13443ffff', '89441a13443ffff', 'completed');
+
+INSERT INTO transactions (customer_id, driver_id, vehicle_id, status, load_id) VALUES
+(137, 117, 1, 'completed', 1),
+(138, 118, 2, 'completed', 2),
+(139, 119, 3, 'completed', 3),
+(140, 120, 4, 'completed', 4),
+(141, 121, 5, 'completed', 5),
+(142, 122, 6, 'completed', 6),
+(143, 123, 7, 'completed', 7),
+(144, 124, 8, 'completed', 8),
+(145, 125, 9, 'completed', 9),
+(146, 126, 10, 'completed', 10);
+
+INSERT INTO reviews (reviewer_id, reviewed_id, rating, comment, transaction_id) VALUES
+(137, 117, 4.5, 'Great service!', 1),
+(138, 118, 4.0, 'Good job, but a bit late.', 2),
+(139, 119, 5.0, 'Excellent service, highly recommended!', 3),
+(140, 120, 3.5, 'Service was okay, could be better.', 4),
+(141, 121, 4.8, 'Very professional and efficient.', 5),
+(142, 122, 4.2, 'Satisfied with the service.', 6),
+(143, 123, 4.7, 'Handled my items with care.', 7),
+(144, 124, 3.8, 'Decent service, but room for improvement.', 8),
+(145, 125, 5.0, 'Outstanding service! Will use again.', 9),
+(146, 126, 4.6, 'Very efficient and friendly.', 10);
 
 

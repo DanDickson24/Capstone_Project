@@ -8,7 +8,7 @@ function isValidLatLng(lat, lng) {
     return lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
 }
 
-
+// The Load class handles operations related to loads in the application.
 class Load {
     constructor(loadData) {
         Object.assign(this, loadData);
@@ -16,6 +16,8 @@ class Load {
     toString() {
         return JSON.stringify(this, null, 2);
     }
+
+// Creates a new load in the database with the provided load data.
     static async createLoad(loadData) {
         console.log('Received load data:', loadData);
         
@@ -77,6 +79,7 @@ class Load {
 
     }
 
+// Converts a point (in hex format) to latitude and longitude.
     static pointToLatLng(point) {
         if (!point) return null;
         const buffer = Buffer.from(point, 'hex');
@@ -85,6 +88,7 @@ class Load {
         return { lat, lng };
     }
 
+// Finds the latest load for a given customer by their ID.
     static async findLatestLoadByCustomerId(customerId) {
         console.log('Fetching latest load for customer_id:', customerId);
     
@@ -123,7 +127,7 @@ class Load {
         }
     }
 
-
+// Finds load requests nearby a driver's location considering the vehicle's capabilities.
     static async findNearbyLoadRequests(driverLocation, vehicleInfo, maxRadius = 20) {
         console.log(`Driver location for H3 Index Calculation: Lat - ${driverLocation.lat}, Lng - ${driverLocation.lng}`);
         const driverH3Index = h3.geoToH3(driverLocation.lat, driverLocation.lng, 9);

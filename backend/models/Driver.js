@@ -1,8 +1,10 @@
 const db = require('../db'); 
 const h3 = require('h3-js');
 
-
+// The Driver class represents a driver in the application.
+// It includes properties related to the driver's details and their vehicle.
 class Driver {
+// The constructor initializes a new instance of the Driver class.
   constructor(driverData) {
     this.driver_id = driverData.driver_id;
     this.current_location = driverData.current_location; 
@@ -16,6 +18,7 @@ class Driver {
     this.vehicle_make = driverData.vehicle_make;
     this.vehicle_model = driverData.vehicle_model;
   }
+// Updates the service type of a driver in the database.
   static async updateServiceType(driverId, newType) {
     try {
       const query = `UPDATE drivers SET service_type = $1 WHERE driver_id = $2`;
@@ -24,7 +27,7 @@ class Driver {
       throw new Error('Error updating service preference');
     }
   }
-
+// Retrieves the current service type of a driver.
   static async fetchServiceType(driverId) {
     try {
       const query = `SELECT service_type FROM drivers WHERE driver_id = $1`;
@@ -35,7 +38,7 @@ class Driver {
       throw error;
     }
   }
-
+// Fetches the current location of a driver.
   static async fetchType(driverId) {
     try {
       const query = `SELECT service_type FROM drivers WHERE driver_id = $1`;
@@ -45,7 +48,8 @@ class Driver {
       throw new Error('Error fetching service preference');
     }
   }
-  
+
+  // Finds nearby drivers for a specific load based on location and service requirements.
   static async fetchLocation(driverId) {
     try {
         console.log(`Fetching location for driver with driverId: ${driverId}`);
@@ -65,7 +69,7 @@ class Driver {
         throw error;
     }
 }
-
+  // Finds nearby drivers for a specific load based on location and service requirements.
 static async findNearbyDriversForLoad(load) {
   const vehiclePayloadCapacity = load.need_hauling ? parseFloat(load.load_weight) : null;
   const vehicleTowingCapacity = load.need_towing ? parseFloat(load.load_weight) : null;
@@ -77,7 +81,7 @@ static async findNearbyDriversForLoad(load) {
     vehicleTowingCapacity
   );
 }
-
+  // Finds nearby drivers within a certain radius based on the driver's location and service type.
   static async findNearbyDrivers(loadLocation, serviceType, vehiclePayloadCapacity, vehicleTowingCapacity, maxRadius = 20) {
     const loadH3Index = h3.geoToH3(loadLocation.lat, loadLocation.lng, 9);
     let radius = 1;
@@ -124,6 +128,7 @@ static async findNearbyDriversForLoad(load) {
     return nearbyDrivers;
   }
 
+// Updates the current location of a driver in the database.
   static async updateCurrentLocation(driverId, newLocation) {
     try {
       const h3Index = h3.geoToH3(newLocation.lat, newLocation.lng, 9);

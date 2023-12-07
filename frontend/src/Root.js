@@ -16,8 +16,8 @@ function Root() {
           borderRadius: 2,
           boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' 
       }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Welcome to Hauler
+        <Typography variant="h5" component="h1" gutterBottom>
+          Need to move your stuff? Try Hauler!
         </Typography>
         <Button variant="contained" color="secondary" component={Link} to="/signup" fullWidth>
           Sign Up

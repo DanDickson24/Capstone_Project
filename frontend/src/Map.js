@@ -4,6 +4,18 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { MAPBOX_ACCESS_TOKEN } from './api/mapboxApi';
 import './Map.css';
 
+/**
+ * The Map component is responsible for rendering a map using Mapbox GL JS.
+ * It displays markers for locations, user's location, and routes for journeys.
+ * 
+ * Props:
+ * - locations: Array of location objects with longitude and latitude.
+ * - userLocation: Object representing the user's current location.
+ * - center: Array containing longitude and latitude to center the map.
+ * - userType: String indicating the user type ('customer' or 'driver').
+ * - route: Object containing the journey route details.
+ * - bookedDriverId: ID of the booked driver.
+ */
 const Map = ({ locations, userLocation, center, userType, route, bookedDriverId }) => {
     const mapContainer = useRef(null);
     const map = useRef(null);
@@ -11,6 +23,7 @@ const Map = ({ locations, userLocation, center, userType, route, bookedDriverId 
     const driverMarker = useRef(null);
     const driverMarkers = useRef([]);
 
+// Initialize map and markers
     useEffect(() => {
         console.log('Initializing map and markers');
         if (!map.current) {
@@ -30,7 +43,6 @@ const Map = ({ locations, userLocation, center, userType, route, bookedDriverId 
         }
 
         locations.forEach(location => {
-            console.log("Adding marker for location:", location);
             const el = document.createElement('div');
             el.className = 'marker';
             const icon = userType === 'driver' ? 'loadicon.png' : 'caricon.png';
@@ -59,9 +71,8 @@ const Map = ({ locations, userLocation, center, userType, route, bookedDriverId 
         };
     }, [center, locations, userType, userLocation]);
 
-
+// Update route and move driver marker
     useEffect(() => {
-        console.log('Updating route and moving driver marker');
         if (!mapLoaded || !route || !route.coordinates) return;
 
 
@@ -96,8 +107,8 @@ const Map = ({ locations, userLocation, center, userType, route, bookedDriverId 
 
     }, [route, mapLoaded]);
 
+// Remove non-booked driver markers when a driver is booked
     useEffect(() => {
-        console.log(`Booked driver ID: ${bookedDriverId}`);
         if (bookedDriverId && driverMarkers.current.length) {
             console.log('Removing non-booked driver markers');
             driverMarkers.current.forEach(marker => marker.remove());
@@ -105,6 +116,7 @@ const Map = ({ locations, userLocation, center, userType, route, bookedDriverId 
         }
     }, [bookedDriverId]);
 
+// Update route on map
     const updateRouteOnMap = (route) => {
         const routeCoordinates = route.coordinates.map(coord => [coord.lng, coord.lat]);
         if (map.current.getSource('route')) {
@@ -145,7 +157,24 @@ const Map = ({ locations, userLocation, center, userType, route, bookedDriverId 
         }
     };
 
-    return <div ref={mapContainer} style={{ height: '500px', width: '100%' }} />;
+// Fit map to route bounds
+    useEffect(() => {
+        if (map.current && route && route.coordinates.length > 0) {
+          const bounds = route.coordinates.reduce(function(bounds, coord) {
+            return bounds.extend([coord.lng, coord.lat]);
+          }, new mapboxgl.LngLatBounds(route.coordinates[0], route.coordinates[0]));
+      
+          map.current.fitBounds(bounds, {
+            padding: { top: 10, bottom:25, left: 15, right: 5 },
+            maxZoom: 15,
+            bearing: -15, 
+            pitch: 30, 
+            duration: 0
+          });
+        }
+      }, [route]);
+
+    return <div ref={mapContainer} className="mapContainer" />;
 };
 
 export default Map;

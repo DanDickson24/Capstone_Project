@@ -4,10 +4,16 @@ import Map from './Map';
 import { AuthContext } from './AuthContext';
 import NearbyDrivers from './NearbyDrivers';
 import NearbyLoads from './NearbyLoads';
-import { Container, Grid, Box } from '@mui/material';
+import { Container, Box } from '@mui/material';
 import { getRouteData } from './api/mapboxApi';
 import polyline from '@mapbox/polyline';
 
+
+/**
+ * The Journey component is responsible for managing and displaying the journey-related
+ * information for users (customers and drivers).
+ * It fetches journey data, handles driver bookings, pickup loads, and displays map routes.
+ */
 const Journey = () => {
     const { user } = useContext(AuthContext);
     const [load, setLoad] = useState(null);
@@ -20,14 +26,13 @@ const Journey = () => {
     console.log("Initial States:", { load, nearbyDrivers, nearbyLoads, center, driverLocation, route, bookedDriverId });
     console.log("User Context:", user);
 
+// Fetch journey data based on user type
     const fetchJourneyData = async () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.get('http://localhost:3000/user/journey', {
                 headers: { Authorization: `Bearer ${token}` }
             });
-    
-            console.log("Journey Data Response:", response.data);
     
             if (user.user_type === 'customer' && response.data.latestLoad) {
                 setLoad(response.data.latestLoad);
@@ -43,29 +48,28 @@ const Journey = () => {
         }
     };
 
+// Effect hook to fetch data on user update
     useEffect(() => {
-        console.log("User updated:", user);
         if (user) {
             fetchJourneyData();
         }
     }, [user]);
 
+// Function to validate if coordinates are valid
 const isValidCoordinate = (lat, lng) => {
     return lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
 };
+
+// Function to handle driver booking by a customer
 const onDriverBooked = async (driver) => {
-    console.log("Driver booked:", driver);
     if (isValidCoordinate(load?.pickup_lat, load?.pickup_lng) && isValidCoordinate(driver.lat, driver.lng)) {
         try {
             const routeData = await getRouteData(driver.lng, driver.lat, load.pickup_lng, load.pickup_lat);
-            console.log("Route Data from API:", routeData);
 
             if (routeData && routeData.geometry) {
-                console.log("Polyline from API:", routeData.geometry);
 
                 try {
                     const coordinates = polyline.decode(routeData.geometry);
-                    console.log("Decoded Coordinates:", coordinates);
                     const transformedCoordinates = coordinates.map(coord => ({ lng: coord[1], lat: coord[0] }));
                     if (transformedCoordinates.every(coord => coord.hasOwnProperty('lat') && coord.hasOwnProperty('lng'))) {
                         setRoute({
@@ -90,12 +94,11 @@ const onDriverBooked = async (driver) => {
     setBookedDriverId(driver.driver_id);
 };
 
+// Function to handle load pickup by a driver
 const onPickupLoad = async (load) => {
-    console.log("Load picked up:", load);
     if (isValidCoordinate(driverLocation?.lat, driverLocation?.lng) && isValidCoordinate(load.pickup_lat, load.pickup_lng)) {
         try {
             const routeData = await getRouteData(driverLocation.lng, driverLocation.lat, load.pickup_lng, load.pickup_lat);
-            console.log("Route Data from API:", routeData);
 
             if (routeData && routeData.geometry) {
                 console.log("Polyline from API:", routeData.geometry);
@@ -126,18 +129,19 @@ const onPickupLoad = async (load) => {
     }
 };
 
-
+// Effect hook to update map center based on nearby loads
 useEffect(() => {
-    console.log("Nearby Loads updated:", nearbyLoads);
     if (user.user_type === 'driver' && nearbyLoads.length > 0) {
         setCenter({ lng: parseFloat(nearbyLoads[0].pickup_lng), lat: parseFloat(nearbyLoads[0].pickup_lat) });
     }
 }, [nearbyLoads, user.user_type]);
 
+// Prepare map locations and components to show based on user type
 let mapLocations = [];
 let componentToShow = null;
 let userMapLocation = null;
 
+// Logic to determine componentToShow and mapLocations based on user type
 if (user.user_type === 'customer' && nearbyDrivers.length > 0) {
     mapLocations = nearbyDrivers.map(d => ({ lng: parseFloat(d.lng), lat: parseFloat(d.lat) }));
     componentToShow = <NearbyDrivers
@@ -152,12 +156,10 @@ if (user.user_type === 'customer' && nearbyDrivers.length > 0) {
                       />;
     userMapLocation = load ? { lng: parseFloat(load.pickup_lng), lat: parseFloat(load.pickup_lat) } : null;
 } else if (user.user_type === 'driver') {
-    // Add driver's current location
     if (driverLocation) {
         userMapLocation = { lng: parseFloat(driverLocation.lng), lat: parseFloat(driverLocation.lat) };
         mapLocations.push(userMapLocation);
     }
-
     if (nearbyLoads && nearbyLoads.length > 0) {
         mapLocations = [...mapLocations, ...nearbyLoads.map(l => ({ lng: parseFloat(l.pickup_lng), lat: parseFloat(l.pickup_lat) }))];
         componentToShow = <NearbyLoads loads={nearbyLoads} driverLat={driverLocation?.lat} driverLng={driverLocation?.lng} onPickupLoad={onPickupLoad} />;

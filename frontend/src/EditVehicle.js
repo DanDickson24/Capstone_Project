@@ -3,7 +3,8 @@ import axios from 'axios';
 import { fetchVehicleMakes, fetchVehicleModels } from './api/nhtsaApi';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from './AuthContext';
-import { TextField, Button, Select, MenuItem, InputLabel, FormControl, Slider, Typography, Box, Container, Card, CardContent } from '@mui/material';
+import { Typography,  Container, Card, CardContent, Box } from '@mui/material';
+import EditVehicleForm from './Forms/EditVehicleForm';
 
 function EditVehicle() {
     const { user } = useContext(AuthContext);
@@ -24,6 +25,19 @@ function EditVehicle() {
         preferredPayloadCapacity: '',
         preferredTowingCapacity: ''
     });
+
+    const getFormattedServiceType = (serviceType) => {
+      switch (serviceType) {
+        case 'hauling_and_towing':
+          return 'Hauling & Towing';
+        case 'towing':
+          return 'Towing';
+        case 'hauling':
+          return 'Hauling';
+        default:
+          return serviceType;
+      }
+    };
 
     const fetchVehicleData = useCallback(async () => {
         if (user && user.user_id) {
@@ -97,98 +111,62 @@ function EditVehicle() {
     };
 
     return (
-        <Container maxWidth="sm">
-            {Object.keys(currentVehicle).length > 0 && (
-                <Card sx={{ mb: 3 }}>
-                    <CardContent>
-                        <Typography variant="h6">Current Vehicle Settings</Typography>
-                        <Typography variant="body1">Service Type: {serviceType}</Typography>
-                        <Typography variant="body1">Year: {currentVehicle.vehicle_year}</Typography>
-                        <Typography variant="body1">Make: {currentVehicle.vehicle_make}</Typography>
-                        <Typography variant="body1">Model: {currentVehicle.vehicle_model}</Typography>
-                        <Typography variant="body1">Trim: {currentVehicle.vehicle_trim || 'N/A'}</Typography>
-                        <Typography variant="body1">Payload Capacity: {currentVehicle.vehicle_payload_capacity}</Typography>
-                        <Typography variant="body1">Towing Capacity: {currentVehicle.vehicle_towing_capacity}</Typography>
-                        <Typography variant="body1">Preferred Payload Capacity: {currentVehicle.user_set_payload_capacity}</Typography>
-                        <Typography variant="body1">Preferred Towing Capacity: {currentVehicle.user_set_towing_capacity}</Typography>
-                    </CardContent>
-                </Card>
-            )}
-    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}> 
-      <Typography component="h1" variant="h5" color="textSecondary">
-        Update Vehicle Settings
-      </Typography>
-    <FormControl fullWidth margin="normal">
-    <InputLabel>Service Preference</InputLabel>
-    <Select name="serviceType" value={formData.serviceType} onChange={handleChange} color="secondary">
-      <MenuItem value="towing">Towing</MenuItem>
-      <MenuItem value="hauling">Hauling</MenuItem>
-      <MenuItem value="hauling_and_towing">Both</MenuItem>
-    </Select>
-  </FormControl>
-
-  <FormControl fullWidth margin="normal">
-    <InputLabel>Vehicle Year</InputLabel>
-    <Select name="vehicleYear" value={formData.vehicleYear} onChange={handleChange} color="secondary">
-      {vehicleYears.map(year => (
-        <MenuItem key={year} value={year}>{year}</MenuItem>
-      ))}
-    </Select>
-  </FormControl>
-
-  <FormControl fullWidth margin="normal">
-    <InputLabel>Vehicle Make</InputLabel>
-    <Select name="vehicleMake" value={formData.vehicleMake} onChange={handleChange} color="secondary">
-      {vehicleMakes.map(make => (
-        <MenuItem key={make} value={make}>{make}</MenuItem>
-      ))}
-    </Select>
-  </FormControl>
-
-  <FormControl fullWidth margin="normal">
-    <InputLabel>Vehicle Model</InputLabel>
-    <Select name="vehicleModel" value={formData.vehicleModel} onChange={handleChange} color="secondary">
-      {vehicleModels.map(model => (
-        <MenuItem key={model} value={model}>{model}</MenuItem>
-      ))}
-    </Select>
-  </FormControl>
-
-  <TextField label="Vehicle Trim (optional)" name="vehicleTrim" onChange={handleChange} fullWidth margin="normal" variant="outlined" color="secondary" />
-
-  {shouldDisplayField('VehiclePayloadCapacity') && (
-    <Box margin="normal">
-      <Typography gutterBottom>Vehicle Payload Capacity (lb): {formData.vehiclePayloadCapacity}</Typography>
-      <Slider name="vehiclePayloadCapacity" min={0} max={8000} step={100} value={formData.vehiclePayloadCapacity || 0} onChange={handleChange} valueLabelDisplay="auto" />
-    </Box>
-  )}
-
-  {shouldDisplayField('VehicleTowingCapacity') && (
-    <Box margin="normal">
-      <Typography gutterBottom>Vehicle Towing Capacity (lb): {formData.vehicleTowingCapacity}</Typography>
-      <Slider name="vehicleTowingCapacity" min={0} max={35000} step={100} value={formData.vehicleTowingCapacity || 0} onChange={handleChange} valueLabelDisplay="auto" />
-    </Box>
-  )}
-
-  {shouldDisplayField('PreferredPayloadCapacity') && (
-    <Box margin="normal">
-      <Typography gutterBottom>Preferred Payload Capacity (lb): {formData.preferredPayloadCapacity}</Typography>
-      <Slider name="preferredPayloadCapacity" min={0} max={8000} step={100} value={formData.preferredPayloadCapacity || 0} onChange={handleChange} valueLabelDisplay="auto" />
-    </Box>
-  )}
-
-  {shouldDisplayField('PreferredTowingCapacity') && (
-    <Box margin="normal">
-      <Typography gutterBottom>Preferred Towing Capacity (lb): {formData.preferredTowingCapacity}</Typography>
-      <Slider name="preferredTowingCapacity" min={0} max={35000} step={100} value={formData.preferredTowingCapacity || 0} onChange={handleChange} valueLabelDisplay="auto" />
-    </Box>
-  )}
-
-    <Button variant="contained" color="secondary" type="submit" fullWidth sx={{ mt: 3, mb: 2 }}>Update Vehicle
-    </Button>
-    </Box>
-    </Container>
-  );
-}
-
-export default EditVehicle;
+      <Container maxWidth="sm">
+      <Box sx={{
+        marginTop: 8, 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        backgroundColor: '#f5f5f5',
+        padding: 3, 
+        borderRadius: 2, 
+        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)'
+      }}>
+          {Object.keys(currentVehicle).length > 0 && (
+            <Card raised sx={{ mb: 4 }}>
+              <CardContent sx={{
+                bgcolor: 'background.default',
+                boxShadow: 1,
+                borderRadius: 2,
+                p: 2,
+                mb: 2,
+                borderBottom: 0,
+                '.MuiTypography-h6': {
+                  fontSize: '1.25rem',
+                  fontWeight: 'bold',
+                  mb: 1,
+                },
+                '.MuiTypography-body1': {
+                  mb: 0.5,
+                }
+              }}>
+                <Typography variant="h6" gutterBottom>
+                  Current Vehicle Settings
+                </Typography>
+                <Typography variant="body1">Service Type: {getFormattedServiceType(serviceType)}</Typography>
+                <Typography variant="body1">Year: {currentVehicle.vehicle_year}</Typography>
+                <Typography variant="body1">Make: {currentVehicle.vehicle_make}</Typography>
+                <Typography variant="body1">Model: {currentVehicle.vehicle_model}</Typography>
+                <Typography variant="body1">Trim: {currentVehicle.vehicle_trim || 'N/A'}</Typography>
+                <Typography variant="body1">Payload Capacity: {currentVehicle.vehicle_payload_capacity}</Typography>
+                <Typography variant="body1">Towing Capacity: {currentVehicle.vehicle_towing_capacity}</Typography>
+                <Typography variant="body1">Preferred Payload Capacity: {currentVehicle.user_set_payload_capacity}</Typography>
+                <Typography variant="body1">Preferred Towing Capacity: {currentVehicle.user_set_towing_capacity}</Typography>
+              </CardContent>
+            </Card>
+          )}
+          <EditVehicleForm
+            vehicleYears={vehicleYears}
+            vehicleMakes={vehicleMakes}
+            vehicleModels={vehicleModels}
+            formData={formData}
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+            shouldDisplayField={shouldDisplayField}
+          />
+        </Box>
+      </Container>
+    );
+  }
+  
+  export default EditVehicle;

@@ -4,6 +4,7 @@ const Driver = require('./Driver');
 const Load = require('./Load');
 const Vehicle = require('./Vehicle');
 
+// The User class handles operations related to users in the application.
 class User {
   constructor(userData) {
       this.user_id = userData.user_id;
@@ -19,7 +20,7 @@ class User {
       this.created_at = userData.created_at;
       this.updated_at = userData.updated_at;
   }
-    
+// Creates a new customer user in the database.
   static async createCustomer(userData) {
     try {
       const existingUser = await db.query(
@@ -46,7 +47,7 @@ class User {
       throw error;
     }
   }
-
+// Creates a new driver user in the database.
 static async createDriver(userData) {
   try {
     const existingUser = await db.query(
@@ -89,7 +90,7 @@ static async createDriver(userData) {
   }
 }
 
-
+// Finds a user by their username and returns user data.
 static async findByUsername(username) {
   try {
     const query = `SELECT * FROM users WHERE username = $1`;
@@ -110,6 +111,7 @@ static async findByUsername(username) {
   }
 }
 
+ // Fetches the geographical location of a user by their ID.
 static async fetchLocation(userId) {
   try {
       const query = `SELECT latitude, longitude FROM users WHERE user_id = $1`;
@@ -122,6 +124,7 @@ static async fetchLocation(userId) {
   }
 }
 
+// Finds a user by their ID and returns user data.
 static async findByUserId(userId) {
   try {
     console.log(`Finding user by ID: ${userId}`);
@@ -148,6 +151,8 @@ static async findByUserId(userId) {
   throw error;
 }
 }
+
+// Retrieves journey data for a user based on their user type.
 static async getJourneyData(userId) {
   const user = await this.findByUserId(userId);
   if (!user) {
@@ -163,6 +168,7 @@ static async getJourneyData(userId) {
   }
 }
 
+// Gets journey data for a customer user.
 static async getCustomerJourneyData(userId) {
   const latestLoad = await Load.findLatestLoadByCustomerId(userId);
   if (!latestLoad) {
@@ -173,6 +179,7 @@ static async getCustomerJourneyData(userId) {
   return { latestLoad, nearbyDrivers };
 }
 
+// Gets journey data for a driver user.
 static async getDriverJourneyData(userId) {
   const driverLocation = await Driver.fetchLocation(userId);
   if (!driverLocation) {
@@ -187,6 +194,51 @@ static async getDriverJourneyData(userId) {
   const loadRequests = await Load.findNearbyLoadRequests(driverLocation, vehicleInfo);
   return { driverLocation, vehicleInfo, loadRequests };
 }
+
+// Retrieves past journey data for a user.
+static async getPastJourneys(userId, userType) {
+  try {
+    const query = `
+    SELECT
+    d.first_name || ' ' || d.last_name AS opposite_user_name,
+    l.description AS load_description,
+    ST_AsText(l.pickup_location) AS pickup_location,
+    ST_AsText(l.dropoff_location) AS dropoff_location,
+    l.service_type,
+    r.rating AS review_rating
+  FROM transactions t
+  JOIN loads l ON l.load_id = t.load_id
+  JOIN reviews r ON r.transaction_id = t.transaction_id
+  JOIN users c ON t.customer_id = c.user_id
+  JOIN drivers d ON t.driver_id = d.driver_id
+  WHERE t.status = 'completed' AND (t.customer_id = $1 OR t.driver_id = $1)
+    `;
+    
+    const values = [userId];
+    console.log('Executing SQL query for past journeys', query, values);
+    const result = await db.query(query, values);
+
+    const journeys = result.rows.map(row => {
+      const pickupLocation = Vehicle.pointToLatLng(row.pickup_location);
+      const dropoffLocation = Vehicle.pointToLatLng(row.dropoff_location);
+
+      return {
+        oppositeUserName: row.opposite_user_name,
+        loadDescription: row.load_description,
+        pickupLocation: pickupLocation ? `${pickupLocation.lat}, ${pickupLocation.lng}` : 'Unavailable',
+        dropoffLocation: dropoffLocation ? `${dropoffLocation.lat}, ${dropoffLocation.lng}` : 'Unavailable',
+        serviceType: row.service_type,
+        reviewRating: row.review_rating
+      };
+    });
+
+    return journeys;
+  } catch (error) {
+    console.error('Error in getPastJourneys:', error);
+    throw new Error('Failed to get past journeys');
+  }
+}
+
 }
 
   module.exports = User;

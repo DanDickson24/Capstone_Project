@@ -1,7 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../AuthContext';
 import { TextField, Button, Box, Container, Typography } from '@mui/material';
 
 export function CustomerSignUpForm() {
@@ -30,7 +29,6 @@ export function CustomerSignUpForm() {
         const signUpResponse = await axios.post('http://localhost:3000/user/signup', customerData);
 
         if (signUpResponse.status === 201) {
-          console.log('Sign-up successful:', signUpResponse.data);
           
 
           navigate('/signin');

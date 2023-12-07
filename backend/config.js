@@ -7,7 +7,7 @@ const PORT = +process.env.PORT || 3000;
 
 function getDatabaseUri() {
   return (process.env.NODE_ENV === "test")
-      ? "jobly_test"
+      ? "hauler"
       : process.env.DATABASE_URL || "postgres:test@localhost:5432/hauler";
       
 }

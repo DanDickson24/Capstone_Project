@@ -43,6 +43,7 @@ CREATE TABLE reviews (
     review_id SERIAL PRIMARY KEY,
     reviewer_id INTEGER REFERENCES users(user_id),
     reviewed_id INTEGER REFERENCES users(user_id),
+    transaction_id INTEGER REFERENCES transactions(transaction_id),
     rating DECIMAL(3, 2) NOT NULL,
     comment TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

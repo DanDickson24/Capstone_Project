@@ -1,0 +1,6 @@
+.content {
+    height: calc(100vh - var(--navbar-height));
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+  }
