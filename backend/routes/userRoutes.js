@@ -76,26 +76,6 @@ router.get('/home', verifyToken, (req, res) => {
     }
 });
 
-// Route to fetch the past journeys of a user.
-router.get('/pastjourneys', verifyToken, async (req, res) => {
-  try {
-    console.log(`Received /pastjourneys request from user ${req.user.user_id}`);
-    const userId = req.user.user_id;
-    const userType = req.user.user_type;
-
-    const journeys = await User.getPastJourneys(userId, userType);
-    
-    if (journeys.length === 0) {
-      return res.status(404).json({ message: 'No past journeys found' });
-    }
-
-    res.json(journeys);
-  } catch (error) {
-    console.error('Error in /pastjourneys route:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
 // Route to create a new load request.
 router.post('/load', verifyToken, async (req, res) => {
   try {
@@ -159,7 +139,25 @@ router.post('/editvehicle/:driverId', verifyToken, async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+// Route to fetch the past journeys of a user.
+router.get('/pastjourneys', verifyToken, async (req, res) => {
+  try {
+    console.log(`Received /pastjourneys request from user ${req.user.user_id}`);
+    const userId = req.user.user_id;
+    const userType = req.user.user_type;
 
+    const journeys = await User.getPastJourneys(userId, userType);
+    
+    if (journeys.length === 0) {
+      return res.status(404).json({ message: 'No past journeys found' });
+    }
+
+    res.json(journeys);
+  } catch (error) {
+    console.error('Error in /pastjourneys route:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 // Route to get vehicle information for a driver.
 router.get('/vehicles/:driverId', verifyToken, async (req, res) => {
   try {
@@ -175,6 +173,8 @@ router.get('/vehicles/:driverId', verifyToken, async (req, res) => {
     console.error('Error in /vehicles/:driverId route:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
+
+
 
 // Route to get the service type of a driver.
   router.get('/serviceType/:driverId', verifyToken, async (req, res) => {

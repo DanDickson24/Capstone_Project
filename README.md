@@ -32,7 +32,7 @@ The `testdata.sql` file contains sample data to populate the database for testin
 - Load management (createLoad, findNearbyLoadRequests).
 - Driver functionalities (updateDriverLocation, findNearbyDriversForLoad).
 - Transaction history (getPastJourneys).
-- Driver/Customer journeys (journey).
+- Driver/Customer journeys (getJourneyData).
 
 ### Frontend
 - Built with React.js.
@@ -44,11 +44,12 @@ The `testdata.sql` file contains sample data to populate the database for testin
 1. Clone the repository.
 2. Install dependencies: `npm install`.
 3. Set up the PostgreSQL database using `dbschema.sql` and `testdata.sql`.
-4. Configure environment variables: `JWT_SECRET`, `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `MAPBOX_ACCESS_TOKEN`, `NHTSA_API_KEY`.
+4. Configure environment variables: `JWT_SECRET`, `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `MAPBOX_ACCESS_TOKEN`.
 5. Start the server: `npm start`.
 
 ## Usage
 - **Sign Up/Login**: Users must sign up and log in to access the application.
-- **Create Load**: Customers can create load requests, which will then find drivers nearby able to handl the request.
+- **Create Load**: Customers can create load requests, which will then find drivers nearby able to handle the request.
 - **Update Driver Location**: Drivers can update their current location and find customers nearby that have loads that meet their parameters.
-- **View Journeys**: Users can view past journeys including reviews.
+- **View Past Journeys**: Users can view past journeys including reviews.
+- **Journey**: Customers are presented a map view of drivers near to them who are able to move their load. Drivers are also presented a map view that shows them the nearest loads to them that their vehicle is able to handle.
