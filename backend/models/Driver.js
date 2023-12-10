@@ -4,7 +4,6 @@ const h3 = require('h3-js');
 // The Driver class represents a driver in the application.
 // It includes properties related to the driver's details and their vehicle.
 class Driver {
-// The constructor initializes a new instance of the Driver class.
   constructor(driverData) {
     this.driver_id = driverData.driver_id;
     this.current_location = driverData.current_location; 

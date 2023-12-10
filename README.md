@@ -31,7 +31,6 @@ The `testdata.sql` file contains sample data to populate the database for testin
 - User authentication (signup, login).
 - Load management (createLoad, findNearbyLoadRequests).
 - Driver functionalities (updateDriverLocation, findNearbyDriversForLoad).
-- Transaction history (getPastJourneys).
 - Driver/Customer journeys (getJourneyData).
 
 ### Frontend
@@ -51,5 +50,9 @@ The `testdata.sql` file contains sample data to populate the database for testin
 - **Sign Up/Login**: Users must sign up and log in to access the application.
 - **Create Load**: Customers can create load requests, which will then find drivers nearby able to handle the request.
 - **Update Driver Location**: Drivers can update their current location and find customers nearby that have loads that meet their parameters.
-- **View Past Journeys**: Users can view past journeys including reviews.
 - **Journey**: Customers are presented a map view of drivers near to them who are able to move their load. Drivers are also presented a map view that shows them the nearest loads to them that their vehicle is able to handle.
+
+## Future Updates
+- **Transaction history/past journeys**: A route that will show users their previous completed journeys
+- **Reviews**: Drivers and customers will be able to leave one another reviews.
+- **Custom pricing**: Drivers will be able to set their own prices for the services they offer.
